@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 
 class PostService
 {
@@ -10,6 +11,8 @@ class PostService
     {
         $request['image'] = ImageService::save($request['image'], 'posts', ['79_80', '225_250', '730_547']);
 
+        $request['slug'] = str_replace('', '-', $request['title']);
+        dd($request);
         return Post::create($request);
     }
 

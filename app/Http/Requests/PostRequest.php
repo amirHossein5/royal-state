@@ -25,11 +25,11 @@ class PostRequest extends FormRequest
     {
         $image = strtolower(request()->method()) === "put" ? '' : 'required|';
         return [
-                'title' => 'required|string|max:200',
-                'published_at' => 'nullable|date|date_format:Y-m-d',
-                'cat_id' => 'required|exists:categories,id|numeric',
-                'body' => 'required',
-                'image' => "{$image}image|file"
-            ];
+            'title' => 'required|string|max:200',
+            'published_at' => 'nullable|date|date_format:Y-m-d',
+            'cat_id' => 'required|exists:categories,id|numeric',
+            'body' => 'required',
+            'image' => "{$image}image|file"
+        ];
     }
 }
