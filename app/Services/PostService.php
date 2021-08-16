@@ -9,7 +9,7 @@ class PostService
     public function store(array $request): Post
     {
         $request['image'] = ImageService::save($request['image'], 'posts', ['79_80', '225_250', '730_547']);
-
+        
         return Post::create($request);
     }
 
