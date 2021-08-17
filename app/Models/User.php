@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Authorizable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Authorizable;
 
     public const USER_ROLE = 1;
     public const ADMIN_ROLE = 2;
@@ -64,50 +65,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Advertise::class);
     }
 
-    public function role()
-    {
-        return $this->hasOne(Role::class, 'id', 'role_id');
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
-
     /**
-     *
+     * accessors
      *
      */
-    public function hasPermission(string $permission): Bool
-    {
-        return $this->role->permissions->contains('name', $permission) || $this->permissions->contains('name', $permission);
-    }
-
-    public function addPermission(string $permission)
-    {
-        $permissionId = Permission::givePermissionId($permission);
-
-        return $this->permissions()->attach($permissionId);
-    }
-
-    public function isAdmin(): Bool
-    {
-        return $this->role->id === self::ADMIN_ROLE;
-    }
-
-    public function hasAdvertise(int $id): Bool
+    public function getHasAdvertiseAttribute(int $id): Bool
     {
         return in_array($id, $this->advertises->map(fn ($item) => $item->id)->toArray());
     }
 
     public function getFullNameAttribute(): String
     {
-        return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+        return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function approved(): String
+    public function getApprovedAttribute(): String
     {
-        return $this->attributes['approved']
+        return $this->approved
             ? 'فعال'
             : 'غیرفعال';
     }

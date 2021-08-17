@@ -8,9 +8,9 @@ function errorClass(object $errors, string $name): ?String
         : '';
 }
 
-function oldChecked(int|string $old)
+function oldChecked(int|string $old): String
 {
-    return old($old) !== null ? 'checked' : '';
+    return old($old) !== null ? 'checked' : ' ';
 }
 
 function oldEqualsSelected(int|string $old, int|string $equalsOld): ?String
@@ -30,4 +30,9 @@ function oldOrValueSelected(null|int|string $old, int|string $value, int|string 
 function oldOrValue(null|int|string $old, int|string $value): String
 {
     return old($old) ?? $value;
+}
+
+function make_slug(string $text): String
+{
+    return implode('-', explode(' ', $text));
 }

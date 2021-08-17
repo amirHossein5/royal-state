@@ -31,32 +31,38 @@ class PostController extends Controller
 
     public function store(PostRequest $request): RedirectResponse
     {
-        (new PostService)->store($request->validated());
+        (new PostService)
+            ->store($request->validated());
 
-        return redirect()->route('dashboard.posts.index')->with('success', 'با موفقیت ساخنه شد');
+        return redirect()
+            ->route('dashboard.posts.index')->with('success', 'با موفقیت ساخنه شد');
     }
 
-    public function edit(Post $post)
+    public function edit(Post $post): View
     {
         $categories = (new CategoryService)->getAll();
-        dd($post->published_at->customFormat);
-        // $post->published_at->customFormat();
+
+        $post = (object) $post->toArray();
 
         return view('dashbord.post.edit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
-        (new PostService)->update($request->validated(), $post);
+        (new PostService)
+            ->update($request->validated(), $post);
 
-        return redirect()->route('dashboard.posts.index')->with('success', 'با موفقیت بروزرسانی شد');
+        return redirect()
+            ->route('dashboard.posts.index')
+            ->with('success', 'با موفقیت بروزرسانی شد');
     }
 
     public function destroy(Post $post): RedirectResponse
     {
         $post->delete();
 
-        return back()->with('success', 'با موفقیت پاک شد.');
+        return back()
+            ->with('success', 'با موفقیت پاک شد.');
     }
 
     public function forceDelete(int $id): RedirectResponse
@@ -65,7 +71,8 @@ class PostController extends Controller
             ->where('id', $id)
             ->forceDelete();
 
-        return back()->with('success', 'با موفقیت پاک شد.');
+        return back()
+            ->with('success', 'با موفقیت پاک شد.');
     }
 
     public function restore(int $id): RedirectResponse
@@ -74,6 +81,7 @@ class PostController extends Controller
             ->where('id', $id)
             ->restore();
 
-        return back()->with('success', 'با موفقیت باز گردانده شد.');
+        return back()
+            ->with('success', 'با موفقیت باز گردانده شد.');
     }
 }

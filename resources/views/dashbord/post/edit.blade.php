@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">
-                            <form class="row" action="{{ route('dashboard.posts.update', ['id' => $post->id]) }}"
+                            <form class="row" action="{{ route('dashboard.posts.update', $post->id) }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('put')
@@ -83,10 +83,9 @@
                                     <section class="form-group">
                                         <label for="body">متن</label>
                                         <textarea class="form-control {{ errorClass($errors, 'body') }}" id="body"
-                                            rows="5" name="body" placeholder="متن ...">
-                                                                            {{ oldOrValue('body', $post->body) }}
-                                                            </textarea>
-                                        @error('cat_id')
+                                            rows="5" name="body"
+                                            placeholder="متن ...">{{ oldOrValue('body', $post->body) }}</textarea>
+                                        @error('body')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </section>

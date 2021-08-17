@@ -11,8 +11,8 @@ use App\Http\Controllers\Dashboard\GalleryController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\AdvertiseController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Models\User;
-use App\Notifications\testnotification;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +42,8 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
             Route::get('/', [PostController::class, 'index'])->name('index');
             Route::get('/create', [PostController::class, 'create'])->name('create');
             Route::post('/store', [PostController::class, 'store'])->name('store');
-            Route::get('/edit/{post}', [PostController::class, 'edit'])->name('edit');
-            Route::put('/update/{id}', [PostController::class, 'update'])->name('update');
+            Route::get('/edit/{post:slug}', [PostController::class, 'edit'])->name('edit');
+            Route::put('/update/{post}', [PostController::class, 'update'])->name('update');
             Route::delete('/destroy/{post}', [PostController::class, 'destroy'])->name('destroy');
             Route::delete('/force-delete/{id}', [PostController::class, 'forceDelete'])->name('forceDelete');
             Route::post('/restore/{id}', [PostController::class, 'restore'])->name('restore');
@@ -89,11 +89,11 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
     });
 
 
-/**
- * socialite routes
- *
- */
-
+/*
+|--------------------------------------------------------------------------
+| Socialite routes
+|--------------------------------------------------------------------------
+*/
 Route::prefix('/auth/{driver}')->name('socialite.')->middleware('guest')->group(function () {
     Route::get('/redirect', [SocialiteController::class, 'redirect'])->name('redirect');
     Route::get('/callback', [SocialiteController::class, 'handleCallback'])->name('callback');

@@ -21,16 +21,26 @@ class Category extends Model
         'parent_id'
     ];
 
+    /**
+     * relations
+     *
+     */
     public function parent()
     {
-        return $this->belongsTo(Category::class,'parent_id','id');
+        return $this->belongsTo(Category::class, 'parent_id', 'id');
     }
 
+    /**
+     * scopes
+     *
+     */
     public function scopeWithParent($builder)
     {
         return $builder->addSelect([
-            'parent_name' => DB::table('categories as parents')->select('name')->whereColumn('categories.parent_id', 'parents.id')
+            'parent_name' =>
+            DB::table('categories as parents')
+                ->select('name')
+                ->whereColumn('categories.parent_id', 'parents.id')
         ]);
     }
-
 }

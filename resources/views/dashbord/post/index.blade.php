@@ -32,8 +32,8 @@
 
                                             <tr role="row" class="odd">
                                                 <td class="sorting_1"></td>
-                                                <td>{{ Str::substr($post->title, 0, 10) }}</td>
-                                                <td>{{ $post->category->name }}</td>
+                                                <td>{{ Str::substr($post->title, 0, 10) }}...</td>
+                                                <td>{{ $post->category_name }}</td>
                                                 <td>{{ $post->author->full_name }}</td>
                                                 <td><img style="width: 90px;" src="{{ asset($post->image['79_80']) }}"
                                                         alt="">
@@ -41,11 +41,11 @@
                                                 <td style="min-width: 16rem; text-align: left;">
                                                     @if (!$post->deleted_at)
                                                         <x-dashboard.btn-waves
-                                                            href="{{ route('dashboard.posts.edit', $post->id) }}">
+                                                            href="{{ route('dashboard.posts.edit', $post->slug) }}">
                                                             ویرایش
                                                         </x-dashboard.btn-waves>
 
-                                                        <x-dashboard.inline-form mathod="delete"
+                                                        <x-dashboard.inline-form method="delete"
                                                             href="{{ route('dashboard.posts.destroy', $post->id) }}">
                                                             حذف
                                                         </x-dashboard.inline-form>
