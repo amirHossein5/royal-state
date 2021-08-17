@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Category::factory(50)->create();
         // \App\Models\Advertise::factory(50)->create();
         // \App\Models\Post::factory(50)->create();
-        // $this->call(AssignRolePermissionsSeeder::class);
+        $this->call(AssignRolePermissionsSeeder::class);
     }
 }

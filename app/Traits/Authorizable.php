@@ -17,6 +17,12 @@ trait Authorizable
         return $this->belongsToMany(Permission::class);
     }
 
+    public function getAllPermissionsAttribute()
+    {
+        return
+            $this->permissions->merge($this->role->permissions);
+    }
+
     public function isAdmin(): Bool
     {
         return $this->role->id === self::ADMIN_ROLE;
@@ -24,9 +30,7 @@ trait Authorizable
 
     public function hasPermission(string $permission): Bool
     {
-        return
-            $this->role->permissions->contains('name', $permission) ||
-            $this->permissions->contains('name', $permission);
+        return $this->allPermissions->contains('name',$permission);
     }
 
     public function addPermission(string $permission)

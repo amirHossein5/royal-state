@@ -24,6 +24,8 @@ class PostController extends Controller
 
     public function create(): View
     {
+        $this->authorize('create',Post::class);
+
         $categories = (new CategoryService)->getAll();
 
         return view('dashbord.post.create', compact('categories'));
@@ -31,6 +33,8 @@ class PostController extends Controller
 
     public function store(PostRequest $request): RedirectResponse
     {
+        $this->authorize('create', Post::class);
+
         (new PostService)
             ->store($request->validated());
 
@@ -40,6 +44,8 @@ class PostController extends Controller
 
     public function edit(Post $post): View
     {
+        $this->authorize('update', Post::class);
+
         $categories = (new CategoryService)->getAll();
 
         $post = (object) $post->toArray();
@@ -49,6 +55,8 @@ class PostController extends Controller
 
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
+        $this->authorize('update', Post::class);
+
         (new PostService)
             ->update($request->validated(), $post);
 
@@ -59,6 +67,8 @@ class PostController extends Controller
 
     public function destroy(Post $post): RedirectResponse
     {
+        $this->authorize('delete', Post::class);
+
         $post->delete();
 
         return back()
@@ -67,6 +77,8 @@ class PostController extends Controller
 
     public function forceDelete(int $id): RedirectResponse
     {
+        $this->authorize('forceDelete', Post::class);
+
         Post::withTrashed()
             ->where('id', $id)
             ->forceDelete();
@@ -77,6 +89,8 @@ class PostController extends Controller
 
     public function restore(int $id): RedirectResponse
     {
+        $this->authorize('restore', Post::class);
+
         Post::withTrashed()
             ->where('id', $id)
             ->restore();
