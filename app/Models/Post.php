@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +18,13 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'body', 'image', 'cat_id', 'user_id', 'published_at'
+        'title',
+        'slug',
+        'body',
+        'image',
+        'cat_id',
+        'user_id',
+        'published_at'
     ];
 
     /**
@@ -26,11 +33,14 @@ class Post extends Model
      * @var array
      */
     protected $casts = [
-        'image' => 'array'
+        'image' => 'array',
+        'published_at' => 'date:Y-m-d'
     ];
 
-    protected $dates = ['published_at'];
-
+    /**
+     * relations
+     *
+     */
     public function category()
     {
         return $this->belongsTo(Category::class, 'cat_id');
@@ -46,19 +56,26 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function getCustomFormatAttribute(object $published_at)
+    /**
+     * Accessors
+     *
+     */
+
+
+    /**
+     * scopes
+     *
+     */
+    public function scopeWithCategory($query)
     {
-        dd(1);
-        return $published_at->format('Y-m-d');
+        return $query->addSelect([
+            'category_name' => Category::select('name')
+                ->whereColumn('categories.id', 'posts.cat_id')
+        ]);
     }
 
-    public function scopeWithCategory($builder)
+    public function scopeWithAuthor($query)
     {
-        return $builder->with(['category' => fn ($q) => $q->select('id', 'name')]);
-    }
-
-    public function scopeWithAuthor($builder)
-    {
-        return $builder->with(['author' => fn ($q) => $q->select('first_name', 'last_name', 'id')]);
+        return $query->with('author:first_name,last_name,id');
     }
 }

@@ -24,6 +24,8 @@ class PostController extends Controller
 
     public function create(): View
     {
+        $this->authorize('create',Post::class);
+
         $categories = (new CategoryService)->getAll();
 
         return view('dashbord.post.create', compact('categories'));
@@ -31,49 +33,69 @@ class PostController extends Controller
 
     public function store(PostRequest $request): RedirectResponse
     {
-        (new PostService)->store($request->validated());
+        $this->authorize('create', Post::class);
 
-        return redirect()->route('dashboard.posts.index')->with('success', 'با موفقیت ساخنه شد');
+        (new PostService)
+            ->store($request->validated());
+
+        return redirect()
+            ->route('dashboard.posts.index')->with('success', 'با موفقیت ساخنه شد');
     }
 
-    public function edit(Post $post)
+    public function edit(Post $post): View
     {
+        $this->authorize('update', Post::class);
+
         $categories = (new CategoryService)->getAll();
-        dd($post->published_at->customFormat);
-        // $post->published_at->customFormat();
+
+        $post = (object) $post->toArray();
 
         return view('dashbord.post.edit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
-        (new PostService)->update($request->validated(), $post);
+        $this->authorize('update', Post::class);
 
-        return redirect()->route('dashboard.posts.index')->with('success', 'با موفقیت بروزرسانی شد');
+        (new PostService)
+            ->update($request->validated(), $post);
+
+        return redirect()
+            ->route('dashboard.posts.index')
+            ->with('success', 'با موفقیت بروزرسانی شد');
     }
 
     public function destroy(Post $post): RedirectResponse
     {
+        $this->authorize('delete', Post::class);
+
         $post->delete();
 
-        return back()->with('success', 'با موفقیت پاک شد.');
+        return back()
+            ->with('success', 'با موفقیت پاک شد.');
     }
 
     public function forceDelete(int $id): RedirectResponse
     {
+        $this->authorize('forceDelete', Post::class);
+
         Post::withTrashed()
             ->where('id', $id)
             ->forceDelete();
 
-        return back()->with('success', 'با موفقیت پاک شد.');
+        return back()
+            ->with('success', 'با موفقیت پاک شد.');
     }
 
     public function restore(int $id): RedirectResponse
     {
+        $this->authorize('restore', Post::class);
+
         Post::withTrashed()
             ->where('id', $id)
             ->restore();
 
-        return back()->with('success', 'با موفقیت باز گردانده شد.');
+        return back()
+            ->with('success', 'با موفقیت باز گردانده شد.');
     }
 }

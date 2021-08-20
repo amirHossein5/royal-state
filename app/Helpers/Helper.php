@@ -18,7 +18,7 @@ function errorClass(object $errors, string $name): ?String
  */
 function oldChecked(int|string $old): string
 {
-    return old($old) !== null ? 'checked' : '';
+    return old($old) !== null ? 'checked' : ' ';
 }
 
 /**
@@ -61,4 +61,13 @@ function oldOrValue(null|int|string $old, int|string $value): String
 function hasMorePages(int $current_page, int $last_page): Bool
 {
     return $last_page > $current_page ? true : false;
+}
+
+/**
+ * makes slug from string.
+ *
+ */
+function make_slug(string $text): String
+{
+    return implode('-', explode(' ', $text));
 }

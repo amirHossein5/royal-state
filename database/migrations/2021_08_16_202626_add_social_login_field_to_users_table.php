@@ -14,8 +14,8 @@ class AddSocialLoginFieldToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('social_id')->after('role_id');
-            $table->string('social_type')->after('social_id');
+            $table->string('social_id')->after('role_id')->nullable();
+            $table->string('social_type')->after('social_id')->nullable();
         });
     }
 

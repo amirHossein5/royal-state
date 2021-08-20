@@ -3,14 +3,15 @@
 namespace Tests\Feature\dashboard;
 
 use App\Models\Category;
-use App\Models\User;
+
 use Database\Seeders\AssignRolePermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Traits\AuthorizableTest;
 
 class CategoryTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, AuthorizableTest;
 
     protected $seeder = AssignRolePermissionsSeeder::class;
 
@@ -60,10 +61,7 @@ class CategoryTest extends TestCase
      */
     public function test_user_can_create_category()
     {
-        $this->withoutExceptionHandling();
-
-
-        $this->actWithPermission('category_create');
+        $this->actWithPermission(['category_view_any', 'category_create']);
 
         $response = $this->get(route('dashboard.categories.create'));
         $response->assertStatus(200);
@@ -88,7 +86,7 @@ class CategoryTest extends TestCase
      */
     public function test_user_can_update_category()
     {
-        $this->actWithPermission('category_update');
+        $this->actWithPermission(['category_view_any', 'category_update']);
 
         $firstCategory = Category::create(['name' => 'category without update1']);
         $secondCategory = Category::create(['name' => 'category without update2']);
@@ -116,7 +114,7 @@ class CategoryTest extends TestCase
      */
     public function test_user_can_delete_category()
     {
-        $this->actWithPermission('category_delete');
+        $this->actWithPermission(['category_view_any', 'category_delete']);
 
         $category = Category::create(['name' => 'exists']);
 
@@ -136,7 +134,7 @@ class CategoryTest extends TestCase
      */
     public function test_user_can_restore_category()
     {
-        $this->actWithPermission('category_restore');
+        $this->actWithPermission(['category_view_any', 'category_restore']);
 
         $category = Category::create(['name' => 'test']);
         $category->delete();
@@ -156,7 +154,7 @@ class CategoryTest extends TestCase
      */
     public function test_user_can_force_delete_category()
     {
-        $this->actWithPermission('category_force_delete');
+        $this->actWithPermission(['category_view_any', 'category_force_delete']);
 
         $category = Category::create(['name' => 'test']);
         $category->delete();
@@ -166,14 +164,5 @@ class CategoryTest extends TestCase
         $response->assertRedirect();
 
         $this->assertDatabaseCount('categories', 0);
-    }
-
-    public function actWithPermission(string $permission): User
-    {
-        $user = User::factory()->create();
-        $user->addPermission($permission);
-        $this->actingAs($user);
-
-        return $user;
     }
 }

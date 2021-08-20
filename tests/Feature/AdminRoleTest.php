@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Traits\AuthorizableTest;
 use Database\Seeders\AssignRolePermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,7 +11,7 @@ use Tests\TestCase;
 
 class AdminRoleTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, AuthorizableTest;
 
     protected $seeder = AssignRolePermissionsSeeder::class;
 
@@ -28,13 +29,5 @@ class AdminRoleTest extends TestCase
         // $this->get(route('dashboard.slides.index'))->assertStatus(200);
         $this->get(route('dashboard.comments.index'))->assertStatus(200);
         $this->get(route('dashboard.advertises.index'))->assertStatus(200);
-    }
-
-    public function actWithRole(int $role_id): User
-    {
-        $user = User::factory()->create(['role_id' => $role_id]);
-        $this->actingAs($user);
-
-        return $user;
     }
 }

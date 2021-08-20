@@ -7,53 +7,111 @@ use Intervention\Image\Facades\Image;
 
 class ImageService
 {
-    public static function save(object $image, string $dir, ?array $sizes = null): Array|String
+    private static $image, $folder, $sizes;
+
+    /**
+     * Save Image.
+     *
+     */
+    public static function save(): array|String
     {
-        $path = self::path($dir);
+        $path = self::path(self::$folder);
         self::createDirectory($path);
 
         //if just is one image(without any sizes)
-        if (!$sizes) {
-            return self::saveOneImage($image,$path);
+        if (!self::$sizes) {
+            return self::saveOneImage(self::$image, $path);
         }
 
-        return self::saveMultipleImages($image,$sizes,$path);
+        return self::saveMultipleImages(self::$image, self::$sizes, $path);
     }
 
-    public static function remove(string $path): Void
+    /**
+     * Set Image.
+     *
+     */
+    public static function make(object $image): ImageService
     {
-        $path = public_path($path);
+        self::$image = $image;
+        return new static();
     }
 
-    public static function path(string $dir): String
+    /**
+     * Set folder.
+     *
+     */
+    public static function folder(string $folder): ImageService
+    {
+        self::$folder = $folder;
+        return new static();
+    }
+
+    /**
+     * Set sizes.
+     *
+     */
+    public static function sizes(array $sizes): ImageService
+    {
+        self::$sizes = $sizes;
+        return new static();
+    }
+
+    /**
+     * remove image or images.
+     *
+     */
+    public static function remove(array|string $path): Void
+    {
+        foreach ($path as $image) {
+            File::delete(public_path($image));
+        }
+    }
+
+    /**
+     * Making path that image is going to be saved.
+     *
+     */
+    private static function path(string $dir): String
     {
         $d = DIRECTORY_SEPARATOR;
-        $date = jdate()->format('Y') . $d . jdate()->format('d');
+        $date = jdate()->format('Y') . "/" . jdate()->format('m') . "/" . jdate()->format('d');
         $path = "images/$dir/$date/";
 
         return str_replace('/', $d, $path);
     }
 
-    public static function createDirectory(string $path): Void
+    /**
+     * Create folder if not exists.
+     *
+     */
+    private static function createDirectory(string $path): Void
     {
         if (!is_dir(public_path($path))) {
             File::makeDirectory($path, 0755, true);
         }
     }
 
-    public static function saveOneImage(object $image,string $path): String
+    /**
+     * Save Image if it's one.
+     *
+     */
+    private static function saveOneImage(object $image, string $path): String
     {
-        $filename = rand(100, 999) . '.' . $image->getClientOriginalExtension();
+        $filename = self::time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path($path), $filename);
         return $path . $filename;
     }
 
-    public static function saveMultipleImages(object $image,array $sizes,string $path): Array
+    /**
+     * Save multiple image.
+     *
+     */
+    private static function saveMultipleImages(object $image, array $sizes, string $path): array
     {
         $images = [];
 
         foreach ($sizes as $size) {
-            $completePath = $path . rand(100, 999) . "_{$size}." . $image->getClientOriginalExtension();
+            $completePath = $path . self::time() . rand(0, 99) . "__{$size}." . $image->getClientOriginalExtension();
             $resize = explode('_', $size);
 
             Image::make($image)->resize($resize[0], $resize[1])->save(public_path($completePath));
@@ -61,5 +119,14 @@ class ImageService
         }
 
         return $images;
+    }
+
+    /**
+     * Get current date for creating folders by date.
+     *
+     */
+    private static function time(): string
+    {
+        return now()->format('H_i_');
     }
 }
