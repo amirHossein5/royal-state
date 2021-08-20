@@ -33,7 +33,7 @@ trait AuthorizableTest
         $user->addPermission($permission);
     }
 
-    function addMultiplePermissions(object $user, array $permissions): Void
+    private function addMultiplePermissions(object $user, array $permissions): Void
     {
         foreach ($permissions as $permission) {
             $user->addPermission($permission);
