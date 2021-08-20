@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
-    public function getAll(?int $whereNot = null, ?bool $withParent = null): Collection
+    public function getAll(?int $whereNot = null): Collection
     {
         return DB::table('categories')
-            ->whereNull(['parent_id', 'deleted_at'])
+            ->whereNull(['deleted_at'])
             ->when($whereNot, fn ($q) => $q->where('id', '!=', $whereNot))
             ->get(['name', 'id']);
     }

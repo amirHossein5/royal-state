@@ -31,7 +31,7 @@
 
                                         @foreach ($comments as $comment)
                                             <tr role="row" class="odd">
-                                                <td class="sorting_1">{{ $comment->id }}</td>
+                                                <td class="sorting_1">{{ $loop->iteration }}</td>
                                                 <td>{{ $comment->name }}</td>
                                                 <td>{{ Str::substr($comment->comment, 0, 10) }}</td>
                                                 <td>

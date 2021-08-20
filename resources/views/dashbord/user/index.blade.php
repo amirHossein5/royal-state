@@ -33,7 +33,7 @@
 
                                         @foreach ($users as $user)
                                             <tr role="row" class="even">
-                                                <td class="sorting_1">{{ $user->id }}</td>
+                                                <td class="sorting_1">{{ $loop->iteration }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->first_name }}</td>
                                                 <td>{{ $user->last_name }}</td>

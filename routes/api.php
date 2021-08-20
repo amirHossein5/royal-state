@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Dashboard\CategoryApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->name('api.dashboard.')->group(function () {
+    Route::middleware('can:viewAny,App\Models\Category')
+        ->get('/dashboard/categories', [CategoryApiController::class, 'index'])
+        ->name('categories.index');
 });
