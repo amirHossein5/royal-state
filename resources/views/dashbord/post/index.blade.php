@@ -29,7 +29,7 @@
                                             <th style="min-width: 16rem; text-align: left;">تنظیمات</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="posts">
                                         @foreach ($posts as $post)
 
                                             <tr role="row" class="odd">
@@ -70,19 +70,34 @@
                                                                 href="{{ route('dashboard.posts.forceDelete', ['id' => $post->id]) }}">
                                                                 حذف کامل
                                                             </x-dashboard.inline-form>
-                                                        @endif
-                                                    </td>
-                                                </tr>
+                                                        @endcan
+                                                    @endif
+                                                </td>
+                                            </tr>
 
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <x-pagination-links :class="$posts" />
-                                </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                <section class="text-center">
+                                    <button class="btn btn-secondary" id="addMore">بیشتر</button>
+                                </section>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    @endsection
+        </div>
+    </section>
+@endsection
+
+@section('script')
+    <script src="{{ asset('js/addMorePagination.js') }}"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            addMorePagination("#posts", '#addMore', 5, @json($posts->lastPage()), @json($posts->path()));
+        })
+    </script>
+@endsection

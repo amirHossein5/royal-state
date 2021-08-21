@@ -10,6 +10,12 @@ function addMorePagination(
     var page = 2;
     var index = eachPage;
 
+    //if there arent any items
+    if (page > lastPage) {
+        addMore.hide();
+        return false;
+    }
+
     addMore.click(function () {
         var path = paginationPath + `?page=${page}`;
 
@@ -20,7 +26,6 @@ function addMorePagination(
             index += response.length;
             page += 1;
             addMore.text("بیشتر");
-
             if (page > lastPage) {
                 addMore.hide();
             }
