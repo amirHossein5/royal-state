@@ -90,7 +90,7 @@
 
 @section('script')
 
-    <script src="{{ mix('js/addMorePagination.js') }}"></script>
+    <script src="{{ asset('js/addMorePagination.js') }}"></script>
 
     <script type='text/javascript'>
         $(document).ready(function() {
