@@ -17,7 +17,7 @@ class PostController extends Controller
         $posts = Post::withCategory()
             ->withAuthor()
             ->withTrashed()
-            ->latest()->paginate(10);
+            ->latest()->paginate(5);
 
         return view('dashbord.post.index', compact('posts'));
     }

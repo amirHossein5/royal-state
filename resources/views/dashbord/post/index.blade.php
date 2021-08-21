@@ -33,7 +33,7 @@
                                         @foreach ($posts as $post)
 
                                             <tr role="row" class="odd">
-                                                <td class="sorting_1"></td>
+                                                <td class="sorting_1">{{ $loop->index }}</td>
                                                 <td>{{ Str::substr($post->title, 0, 10) }}...</td>
                                                 <td>{{ $post->category_name }}</td>
                                                 <td>{{ $post->author->full_name }}</td>
@@ -70,19 +70,27 @@
                                                                 href="{{ route('dashboard.posts.forceDelete', ['id' => $post->id]) }}">
                                                                 حذف کامل
                                                             </x-dashboard.inline-form>
-                                                        @endif
-                                                    </td>
-                                                </tr>
+                                                        @endcan
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <x-pagination-links :class="$posts" />
-                                </div>
+                                <section class="text-center">
+                                    <button class="btn btn-secondary" id="addMore">بیشتر</button>
+                                </section>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    @endsection
+        </div>
+    </section>
+@endsection
+
+@section('script')
+    <script src="{{}}"></script>
+@endsection
