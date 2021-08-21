@@ -10,7 +10,7 @@ function addMorePagination(
     var page = 2;
     var index = eachPage;
 
-    //if there arent any items
+    //if there arent few categories
     if (page > lastPage) {
         addMore.hide();
         return false;
