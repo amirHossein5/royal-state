@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->name('api.dashboard.')->group(function () {
-    Route::middleware('can:viewAny,App\Models\Category')
-        ->get('/dashboard/categories', [CategoryApiController::class, 'index'])
-        ->name('categories.index');
-});
+// Route::middleware('auth:sanctum')->name('api.dashboard.')->group(function () {
+//     Route::middleware('can:viewAny,App\Models\Category')
+//         ->get('/dashboard/categories', [CategoryApiController::class, 'index'])
+//         ->name('categories.index');
+// });

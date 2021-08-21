@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Authorizable;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -85,5 +86,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->approved
             ? 'فعال'
             : 'غیرفعال';
+    }
+
+    /**
+     * Scopes
+     *
+     */
+    public function whereId($query, string $operator, int $id): QueryBuilder
+    {
+        return $query->where('id', $operator, $id);
     }
 }

@@ -25,9 +25,9 @@ class Category extends Model
      * relations
      *
      */
-    public function parent()
+    public function chilren()
     {
-        return $this->belongsTo(Category::class, 'parent_id', 'id');
+        return $this->hasMany(Category::class)->with('children');
     }
 
     /**

@@ -29,10 +29,10 @@
                                             <th style="min-width: 6rem; text-align: left;">تنظیمات</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="categories">
                                         @foreach ($categories as $category)
-                                            <tr role="row" class="odd" id="categoryItem">
-                                                <td class="sorting_1">{{ $loop->iteration }}</td>
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" id="id">{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name }}</td>
                                                 <td>{{ $category->parent_name ?? 'دسته اصلی' }}</td>
                                                 <td style="min-width: 6rem; text-align: left;">
@@ -75,11 +75,9 @@
                                     </tbody>
                                 </table>
 
-                                @if (hasMorePages($categories->currentPage(), $categories->lastPage()))
-                                    <section id="addmore" class="text-center">
-                                        <button class="btn btn-secondary">بیشتر</button>
-                                    </section>
-                                @endif
+                                <section class="text-center">
+                                    <button id="addMore" class="btn btn-secondary">بیشتر</button>
+                                </section>
 
                             </div>
                         </div>
@@ -92,17 +90,11 @@
 
 @section('script')
 
+    <script src="{{ mix('js/addMorePagination.js') }}"></script>
+
     <script type='text/javascript'>
         $(document).ready(function() {
-            $('#addmore').click(function() {
-                $.ajax({
-                    type: 'get',
-                    url: {!! json_encode($categories->nextPageUrl()) !!},
-                    success: function(response) {
-                        $('html').html(response)
-                    }
-                });
-            })
+            addMorePagination("#categories", '#addMore', 5, @json($categories->lastPage()), @json($categories->path()));
         })
     </script>
 
