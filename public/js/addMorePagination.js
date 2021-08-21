@@ -1,6 +1,8 @@
 function addMorePagination(
     itemsId,
+    itemId,
     addMorebtnId,
+    indexId,
     eachPage,
     lastPage,
     paginationPath
@@ -10,7 +12,7 @@ function addMorePagination(
     var page = 2;
     var index = eachPage;
 
-    //if there arent few categories
+    // if there arent few categories
     if (page > lastPage) {
         addMore.hide();
         return false;
@@ -21,11 +23,12 @@ function addMorePagination(
 
         addMore.text("درحال لود...");
 
-        addMoreSendAjax(path, index).then((response) => {
+        addMoreSendAjax(path, index, itemId, indexId).then((response) => {
             categories.append(response);
             index += response.length;
             page += 1;
             addMore.text("بیشتر");
+
             if (page > lastPage) {
                 addMore.hide();
             }
@@ -33,21 +36,18 @@ function addMorePagination(
     });
 }
 
-async function addMoreSendAjax(path, index) {
+async function addMoreSendAjax(path, index, itemId, indexId) {
     let response = await $.ajax({
         type: "get",
         url: path,
     });
 
-    const categoriesResponse = $(response)
-        .find("#categories")
-        .find("tr")
-        .toArray();
+    const itemsResponse = $(response).find(itemId).toArray();
 
-    categoriesResponse.forEach((category) => {
+    itemsResponse.forEach((item) => {
         index++;
-        $(category).find("#id").html(index);
+        $(item).find(indexId).html(index);
     });
 
-    return categoriesResponse;
+    return itemsResponse;
 }

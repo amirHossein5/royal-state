@@ -31,9 +31,8 @@
                                     </thead>
                                     <tbody id="posts">
                                         @foreach ($posts as $post)
-
-                                            <tr role="row" class="odd">
-                                                <td class="sorting_1"></td>
+                                            <tr role="row" class="odd" id="postItem">
+                                                <td class="sorting_1" id="id">{{ $loop->iteration }}</td>
                                                 <td>{{ Str::substr($post->title, 0, 10) }}...</td>
                                                 <td>{{ $post->category_name }}</td>
                                                 <td>{{ $post->author->full_name }}</td>
@@ -97,7 +96,8 @@
 
     <script type='text/javascript'>
         $(document).ready(function() {
-            addMorePagination("#posts", '#addMore', 5, @json($posts->lastPage()), @json($posts->path()));
+            addMorePagination("#posts", '#postItem', '#addMore', '#id', 5, @json($posts->lastPage()),
+                @json($posts->path()));
         })
     </script>
 @endsection

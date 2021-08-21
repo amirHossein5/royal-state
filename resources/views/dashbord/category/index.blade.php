@@ -31,7 +31,7 @@
                                     </thead>
                                     <tbody id="categories">
                                         @foreach ($categories as $category)
-                                            <tr role="row" class="odd">
+                                            <tr role="row" class="odd" id="categoryItem">
                                                 <td class="sorting_1" id="id">{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name }}</td>
                                                 <td>{{ $category->parent_name ?? 'دسته اصلی' }}</td>
@@ -94,7 +94,8 @@
 
     <script type='text/javascript'>
         $(document).ready(function() {
-            addMorePagination("#categories", '#addMore', 5, @json($categories->lastPage()), @json($categories->path()));
+            addMorePagination("#categories", '#categoryItem', '#addMore', '#id', 5, @json($categories->lastPage()),
+                @json($categories->path()));
         })
     </script>
 
