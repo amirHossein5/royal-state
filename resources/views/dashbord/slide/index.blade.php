@@ -33,7 +33,7 @@
                                     <tbody>
 
                                         <tr role="row" class="odd">
-                                            <td class="sorting_1">{{ $slide->id }}</td>
+                                            <td class="sorting_1">{{ $loop->iteration }}</td>
                                             <td>{{ $slide->title }}</td>
                                             <td>{{ $slide->url }}</td>
                                             <td>{{ $slide->address }}</td>

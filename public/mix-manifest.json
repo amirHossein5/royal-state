@@ -1,4 +1,5 @@
 {
-    "/sweetalert/js/app.js": "/sweetalert/js/app.js",
+    "/js/app.js": "/js/app.js",
+    "/js/addMorePagination.js": "/js/addMorePagination.js",
     "/sweetalert/css/app.css": "/sweetalert/css/app.css"
 }

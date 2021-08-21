@@ -35,7 +35,7 @@
                                     <tbody>
                                         @foreach ($ads as $advertise)
                                             <tr>
-                                                <td>{{ $advertise->id }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $advertise->title }}</td>
                                                 <td>{{ $advertise->category->name }}</td>
                                                 <td>{{ $advertise->address }}</td>

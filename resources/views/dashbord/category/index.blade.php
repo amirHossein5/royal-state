@@ -29,10 +29,10 @@
                                             <th style="min-width: 6rem; text-align: left;">تنظیمات</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="categories">
                                         @foreach ($categories as $category)
                                             <tr role="row" class="odd">
-                                                <td class="sorting_1">{{ $category->id }}</td>
+                                                <td class="sorting_1" id="id">{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name }}</td>
                                                 <td>{{ $category->parent_name ?? 'دسته اصلی' }}</td>
                                                 <td style="min-width: 6rem; text-align: left;">
@@ -74,7 +74,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <x-pagination-links :class="$categories" />
+
+                                <section class="text-center">
+                                    <button id="addMore" class="btn btn-secondary">بیشتر</button>
+                                </section>
 
                             </div>
                         </div>
@@ -83,4 +86,16 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+
+    <script src="{{ asset('js/addMorePagination.js') }}"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            addMorePagination("#categories", '#addMore', 5, @json($categories->lastPage()), @json($categories->path()));
+        })
+    </script>
+
 @endsection

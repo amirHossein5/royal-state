@@ -34,6 +34,9 @@
 
     @include('dashbord.layouts.partials.scripts')
 
+
+    {{-- BEGIN: Sweet alert --}}
+
     @if (session()->has('success'))
         @include('dashbord.layouts.partials.sweetalert-success')
     @endif
@@ -41,6 +44,8 @@
     @if (session()->has('failed'))
         @include('dashbord.layouts.partials.sweetalert-failed')
     @endif
+
+    {{-- END: Sweetalert --}}
 
     @yield('script')
 

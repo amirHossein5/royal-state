@@ -4,16 +4,18 @@ namespace App\Services;
 
 use App\Models\Category;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
-    public function getAll(?int $whereNot = null): Collection
+    public function getAll()
     {
-        return DB::table('categories')
-            ->whereNull(['parent_id', 'deleted_at'])
-            ->when($whereNot, fn ($q) => $q->where('id', '!=', $whereNot))
-            ->get(['name', 'id']);
+        return Cache::remember('allCategories', 60 * 60 * 24, function () {
+            return DB::table('categories')
+                ->whereNull(['deleted_at'])
+                ->get(['name', 'id']);
+        });
     }
 
     public function destroy(Category $category)

@@ -33,7 +33,7 @@
                                         @foreach ($posts as $post)
 
                                             <tr role="row" class="odd">
-                                                <td class="sorting_1">{{ $loop->index }}</td>
+                                                <td class="sorting_1"></td>
                                                 <td>{{ Str::substr($post->title, 0, 10) }}...</td>
                                                 <td>{{ $post->category_name }}</td>
                                                 <td>{{ $post->author->full_name }}</td>

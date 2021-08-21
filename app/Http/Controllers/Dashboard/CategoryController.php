@@ -17,7 +17,7 @@ class CategoryController extends Controller
             ->withTrashed()
             ->withParent()
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         return view('dashbord.category.index', compact('categories'));
     }
