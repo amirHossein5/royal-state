@@ -70,27 +70,19 @@
                                                                 href="{{ route('dashboard.posts.forceDelete', ['id' => $post->id]) }}">
                                                                 حذف کامل
                                                             </x-dashboard.inline-form>
-                                                        @endcan
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                        @endif
+                                                    </td>
+                                                </tr>
 
-                                <section class="text-center">
-                                    <button class="btn btn-secondary" id="addMore">بیشتر</button>
-                                </section>
-
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <x-pagination-links :class="$posts" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-@endsection
-
-@section('script')
-    <script src="{{}}"></script>
-@endsection
+        </section>
+    @endsection
