@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Models\Category;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
-    public function getAll()
+    public function getAll(): Collection|Builder
     {
         return Cache::remember('allCategories', 60 * 60 * 24, function () {
             return DB::table('categories')
@@ -18,7 +19,7 @@ class CategoryService
         });
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category): Void
     {
         DB::transaction(function () use ($category) {
             $category->delete();

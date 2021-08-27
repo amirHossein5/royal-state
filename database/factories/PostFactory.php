@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use App\Services\ImageService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PostFactory extends Factory
@@ -26,10 +27,10 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->title(),
             'body' => $this->faker->text(1000),
-            'image' => asset('admin-assets/images/images/image_' . rand(1, 8) . '.jpg'),
-            'cat_id' => Category::inRandomOrder()->first('id'),
-            'user_id' => User::inRandomOrder()->first('id'),
-            'published_at' => $this->faker->date('Y-m-d H:m:s')
+            'cat_id' => Category::factory()->create()->id,
+            'user_id' => User::factory()->create()->id,
+            'published_at' => $this->faker->date('Y-m-d'),
+            'slug' => make_slug($this->faker->title())
         ];
     }
 }

@@ -179,6 +179,7 @@ return [
         'sell_status' => 'نوع آگهی',
         'balcony' => 'بالکن',
         'storeroom' => 'انبار',
-        'id' => 'شناسه'
+        'id' => 'شناسه',
+        'comment' => 'نظر',
     ],
 ];

@@ -19,7 +19,7 @@ class CategoryController extends Controller
             ->latest()
             ->paginate(5);
 
-        return view('dashbord.category.index', compact('categories'));
+        return view('dashbord.categories.index', compact('categories'));
     }
 
     public function create(): View
@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
         $categories = (new CategoryService)->getAll();
 
-        return view('dashbord.category.create', compact('categories'));
+        return view('dashbord.categories.create', compact('categories'));
     }
 
     public function store(CategoryRequest $request): RedirectResponse
@@ -49,7 +49,7 @@ class CategoryController extends Controller
         $categories = (new CategoryService)
             ->getAll($category->id);
 
-        return view('dashbord.category.edit', compact('category', 'categories'));
+        return view('dashbord.categories.edit', compact('category', 'categories'));
     }
 
     public function update(CategoryRequest $request, Category $category): RedirectResponse

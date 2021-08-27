@@ -19,16 +19,16 @@ class PostController extends Controller
             ->withTrashed()
             ->latest()->paginate(5);
 
-        return view('dashbord.post.index', compact('posts'));
+        return view('dashbord.posts.index', compact('posts'));
     }
 
     public function create(): View
     {
-        $this->authorize('create',Post::class);
+        $this->authorize('create', Post::class);
 
         $categories = (new CategoryService)->getAll();
 
-        return view('dashbord.post.create', compact('categories'));
+        return view('dashbord.posts.create', compact('categories'));
     }
 
     public function store(PostRequest $request): RedirectResponse
@@ -44,18 +44,18 @@ class PostController extends Controller
 
     public function edit(Post $post): View
     {
-        $this->authorize('update', Post::class);
+        $this->authorize('update', $post);
 
         $categories = (new CategoryService)->getAll();
 
         $post = (object) $post->toArray();
 
-        return view('dashbord.post.edit', compact('post', 'categories'));
+        return view('dashbord.posts.edit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
-        $this->authorize('update', Post::class);
+        $this->authorize('update', $post);
 
         (new PostService)
             ->update($request->validated(), $post);
@@ -67,7 +67,7 @@ class PostController extends Controller
 
     public function destroy(Post $post): RedirectResponse
     {
-        $this->authorize('delete', Post::class);
+        $this->authorize('delete', $post);
 
         $post->delete();
 
@@ -77,11 +77,14 @@ class PostController extends Controller
 
     public function forceDelete(int $id): RedirectResponse
     {
-        $this->authorize('forceDelete', Post::class);
-
-        Post::withTrashed()
+        $post = Post::withTrashed()
             ->where('id', $id)
-            ->forceDelete();
+            ->first();
+
+        $this->authorize('forceDelete', $post);
+
+        (new PostService)
+            ->forceDelete($post);
 
         return back()
             ->with('success', 'با موفقیت پاک شد.');
@@ -89,11 +92,12 @@ class PostController extends Controller
 
     public function restore(int $id): RedirectResponse
     {
-        $this->authorize('restore', Post::class);
+        $post = Post::withTrashed()
+            ->where('id', $id);
 
-        Post::withTrashed()
-            ->where('id', $id)
-            ->restore();
+        $this->authorize('restore', $post->first());
+
+        $post->restore();
 
         return back()
             ->with('success', 'با موفقیت باز گردانده شد.');

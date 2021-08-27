@@ -23,7 +23,7 @@ class PermissionSeeder extends Seeder
             'category_force_delete',
 
             'post_view_any',
-            'post_view_all',
+            'post_access_all',
             'post_view',
             'post_create',
             'post_update',
@@ -39,7 +39,7 @@ class PermissionSeeder extends Seeder
 
             'advertise_view_any',
             'advertise_view',
-            'advertise_view_all',
+            'advertise_access_all',
             'advertise_create',
             'advertise_update',
             'advertise_delete',

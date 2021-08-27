@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\Authorizable;
+use App\Traits\HasAuthorization;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, Authorizable;
+    use HasApiTokens, HasFactory, Notifiable, HasAuthorization;
 
     public const USER_ROLE = 1;
     public const ADMIN_ROLE = 2;
@@ -67,6 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Advertise::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /**
      * accessors
      *
@@ -92,7 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Scopes
      *
      */
-    public function whereId($query, string $operator, int $id): QueryBuilder
+    public function scopeWhereId($query, string $operator, int $id): QueryBuilder
     {
         return $query->where('id', $operator, $id);
     }

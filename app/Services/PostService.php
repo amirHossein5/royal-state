@@ -32,4 +32,11 @@ class PostService
 
         return $post->update($request);
     }
+
+    public function forceDelete(object $post): Void
+    {
+        ImageService::remove($post->image);
+
+        $post->forceDelete();
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Comment extends Model
 {
@@ -29,26 +30,47 @@ class Comment extends Model
         'approved' => 'boolean',
     ];
 
-    public function approved()
-    {
-        return $this->attributes['approved']
-            ? '<span class="text-success">فعال</span>'
-            : '<span class="text-danger">غیرفعال</span>';
-    }
-
-    public function user()
+    /**
+     * Relations.
+     *
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function parent()
+    public function children(): HasMany
     {
-        return $this->belongsTo(Comment::class, 'parent_id', 'id');
+        return $this->hasMany(Comment::class, 'parent_id', 'id')->with('children');
     }
 
-    public function post()
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }
 
+    /**
+     * Accessors.
+     *
+     */
+    public function getApprovedStatusMinimalAttribute()
+    {
+        return $this->approved
+            ? 'فعال'
+            : 'غیرفعال';
+    }
+
+    public function getApprovedStatusAttribute(): string
+    {
+        return $this->approved
+            ? '<span class="text-success">فعال</span>'
+            : '<span class="text-danger">غیرفعال</span>';
+    }
+
+    public function getApprovedButtonAttribute(): string
+    {
+        return $this->approved
+            ? '<button type="submit" class="btn btn-danger waves-effect waves-light">لغو تایید</button>'
+            : '<button type="submit" class="btn btn-success waves-effect waves-light">تایید</button>';
+    }
 }

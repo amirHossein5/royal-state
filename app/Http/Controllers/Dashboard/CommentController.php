@@ -2,39 +2,51 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-
+use App\Events\CommentCreated;
 use App\Models\Comment;
 use App\Services\CommentService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CommentController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $comments = (new CommentService)->getAll();
 
-        return view('dashbord.comment.index', compact('comments'));
+        return view('dashbord.comments.index', compact('comments'));
     }
 
     public function show(int $id)
     {
-        $comment = Comment::findOrFail($id)
-            ->withTrashed(['post' => fn ($q) => $q->select('id')]);
+        $comment = (new CommentService)->findOrFail($id);
 
-        return view('dashbord.comment.show', compact('comment'));
+        $this->authorize('view', $comment);
+
+        return view('dashbord.comments.show', compact('comment'));
     }
 
     public function store(CommentRequest $request): RedirectResponse
     {
-        Comment::create($request->validated());
+        $parentComment = (new CommentService)->findOrFail($request->parent_id);
+
+        $this->authorize('reply', $parentComment);
+
+        event(new CommentCreated(
+            $parentComment->user_id,
+            $request->comment,
+            $parentComment->comment
+        ));
 
         return redirect()->route('dashboard.comments.index');
     }
 
-    public function approved(Comment $comment): redirectResponse
+    public function approved(Comment $comment): RedirectResponse
     {
+        $this->authorize('approved', Comment::class);
+
         $comment->approved = !$comment->approved;
         $comment->save();
 

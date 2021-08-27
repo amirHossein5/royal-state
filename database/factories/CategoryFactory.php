@@ -21,10 +21,10 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $category = [null,Category::inRandomOrder()->first('id')];
+        $category = [null, Category::inRandomOrder()->first('id')];
         return [
-            'name'=>$this->faker->text(10),
-            'parent_id' => $category[rand(0,1)]
+            'name' => $this->faker->text(10),
+            'parent_id' => $category[rand(0, 1)]
         ];
     }
 }

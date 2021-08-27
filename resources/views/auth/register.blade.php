@@ -60,6 +60,10 @@
                             </div>
 
                             <div class="my-2 font-bold text-center d-grid">
+                                <a type="submit" href="{{ route('login') }}">ورود</a>
+                            </div>
+
+                            <div class="my-2 font-bold text-center d-grid">
                                 <a type="submit" href="{{ route('socialite.redirect', 'google') }}">ورود با گوگل</a>
                             </div>
                         </form>

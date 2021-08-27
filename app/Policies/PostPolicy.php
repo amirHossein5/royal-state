@@ -22,14 +22,14 @@ class PostPolicy
     }
 
     /**
-     * Determine whether the user can view all models.
+     * Determine whether the user can access all models.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAll(User $user)
+    public function accessAll(User $user)
     {
-        return $user->hasPermission('post_view_all');
+        return $user->hasPermission('post_access_all');
     }
 
     /**
@@ -38,10 +38,11 @@ class PostPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user,Post $post)
+    public function view(User $user, Post $post)
     {
-        return $user->hasPermission('post_view') &&
-            $post->author->id === $user->id;
+        return $this->accessAll($user) ||
+            ($user->hasPermission('post_view') &&
+                $post->author->id === $user->id);
     }
 
     /**
@@ -52,7 +53,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermission('post_create');
+        return $this->accessAll($user) || $user->hasPermission('post_create');
     }
 
     /**
@@ -64,7 +65,9 @@ class PostPolicy
      */
     public function update(User $user, post $post)
     {
-        return $user->hasPermission('post_create');
+        return $this->accessAll($user) ||
+            ($user->hasPermission('post_update') &&
+                $post->author->id === $user->id);
     }
 
     /**
@@ -76,28 +79,36 @@ class PostPolicy
      */
     public function delete(User $user, post $post)
     {
-        return $user->hasPermission('post_create');
+        return $this->accessAll($user) ||
+            ($user->hasPermission('post_delete') &&
+                $post->author->id === $user->id);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user)
+    public function restore(User $user, Post $post)
     {
-        return $user->hasPermission('post_restore');
+        return $this->accessAll($user) ||
+            ($user->hasPermission('post_restore') &&
+                $post->author->id === $user->id);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user)
+    public function forceDelete(User $user, Post $post)
     {
-        return $user->hasPermission('post_force_delete');
+        return $this->accessAll($user) ||
+            ($user->hasPermission('post_force_delete') &&
+                $post->author->id === $user->id);
     }
 }

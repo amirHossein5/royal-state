@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\CommentCreated;
+use App\Listeners\SendEmailCommentCreatedListener;
 use App\Models\Advertise;
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\User;
 use App\Observers\AdvertiseObserver;
+use App\Observers\CategoryObserver;
 use App\Observers\PostObserver;
 use App\Observers\CommentObserver;
 use App\Observers\UserObserver;
@@ -26,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        CommentCreated::class => [
+            SendEmailCommentCreatedListener::class,
+        ],
     ];
 
     /**
@@ -39,5 +46,6 @@ class EventServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
         Advertise::observe(AdvertiseObserver::class);
         User::observe(UserObserver::class);
+        Category::observe(CategoryObserver::class);
     }
 }

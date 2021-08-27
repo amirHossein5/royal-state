@@ -27,7 +27,7 @@ class PostRequest extends FormRequest
         return [
             'title' => 'required|string|max:200',
             'published_at' => 'nullable|date|date_format:Y-m-d',
-            'cat_id' => 'required|exists:categories,id|numeric',
+            'cat_id' => 'required|exists:categories,id',
             'body' => 'required',
             'image' => "{$image}image|file"
         ];

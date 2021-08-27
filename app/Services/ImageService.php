@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 class ImageService
 {
-    private static $image, $folder, $sizes;
+    private static $image, $folder, $sizes, $name, $type;
 
     /**
      * Save Image.
@@ -16,22 +18,26 @@ class ImageService
     public static function save(): array|String
     {
         $path = self::path(self::$folder);
-        self::createDirectory($path);
 
         //if just is one image(without any sizes)
         if (!self::$sizes) {
-            return self::saveOneImage(self::$image, $path);
+            return self::saveImage(self::$image, $path);
         }
 
-        return self::saveMultipleImages(self::$image, self::$sizes, $path);
+        return self::saveImageWithSize(self::$image, self::$sizes, $path);
     }
 
     /**
      * Set Image.
      *
      */
-    public static function make(object $image): ImageService
+    public static function make(object|string $image): ImageService
     {
+        if (is_string($image)) {
+            self::$image = new UploadedFile($image, self::$name, self::$type);
+            return new static();
+        }
+
         self::$image = $image;
         return new static();
     }
@@ -43,6 +49,7 @@ class ImageService
     public static function folder(string $folder): ImageService
     {
         self::$folder = $folder;
+
         return new static();
     }
 
@@ -53,6 +60,7 @@ class ImageService
     public static function sizes(array $sizes): ImageService
     {
         self::$sizes = $sizes;
+
         return new static();
     }
 
@@ -63,8 +71,32 @@ class ImageService
     public static function remove(array|string $path): Void
     {
         foreach ($path as $image) {
-            File::delete(public_path($image));
+            Storage::delete(self::getRemovePath($image));
         }
+    }
+
+    /**
+     * makes image and returns that or if exists just returns.
+     *
+     */
+    public static function makeIfNotExists(string $path): Object
+    {
+        self::make($path);
+
+        if (file_exists($path)) {
+            return self::get();
+        }
+
+        return self::save();
+    }
+
+    /**
+     * returns image.
+     *
+     */
+    public static function get(): object
+    {
+        return self::$image;
     }
 
     /**
@@ -73,52 +105,107 @@ class ImageService
      */
     private static function path(string $dir): String
     {
-        $d = DIRECTORY_SEPARATOR;
         $date = jdate()->format('Y') . "/" . jdate()->format('m') . "/" . jdate()->format('d');
         $path = "images/$dir/$date/";
+
+        return self::directory_separator($path);
+    }
+
+    /**
+     * return given path by directory separator.
+     *
+     */
+    private static function directory_separator(string $path): string
+    {
+        $d = DIRECTORY_SEPARATOR;
 
         return str_replace('/', $d, $path);
     }
 
     /**
-     * Create folder if not exists.
+     * sets image name when making UploadedFile() object.
      *
      */
-    private static function createDirectory(string $path): Void
+    public static function name(string $name): ImageService
     {
-        if (!is_dir(public_path($path))) {
-            File::makeDirectory($path, 0755, true);
-        }
+        self::$name = $name;
+
+        return new static();
+    }
+
+    /**
+     * sets image type when making UploadedFile() object.
+     *
+     */
+    public static function type(string $type): ImageService
+    {
+        self::$type = $type;
+
+        return new static();
     }
 
     /**
      * Save Image if it's one.
      *
      */
-    private static function saveOneImage(object $image, string $path): String
+    private static function saveImage(object $image, string $path): String
     {
         $filename = self::time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path($path), $filename);
-        return $path . $filename;
+
+        $image->storeAs(self::stick_public($path), $filename);
+
+        return self::stick_storage($path) . $filename;
     }
 
     /**
      * Save multiple image.
      *
      */
-    private static function saveMultipleImages(object $image, array $sizes, string $path): array
+    private static function saveImageWithSize(object $image, array $sizes, string $path): array
     {
         $images = [];
+        $extension = $image->extension();
 
         foreach ($sizes as $size) {
-            $completePath = $path . self::time() . rand(0, 99) . "__{$size}." . $image->getClientOriginalExtension();
+            $fileName = self::time() . rand(0, 99) . "__{$size}.{$extension}";
             $resize = explode('_', $size);
 
-            Image::make($image)->resize($resize[0], $resize[1])->save(public_path($completePath));
-            $images[$size] = $completePath;
+            $image = Image::make($image)->resize($resize[0], $resize[1]);
+            Storage::put(self::stick_public($path) . $fileName, $image->encode());
+
+            $images[$size] = self::stick_storage($path) . $fileName;
         }
 
         return $images;
+    }
+
+    /**
+     * sticks storage to first of the string.
+     *
+     */
+    private static function stick_storage(string $path): string
+    {
+        return self::directory_separator("storage/{$path}");
+    }
+
+    /**
+     * sticks public to first of the string.
+     *
+     */
+    private static function stick_public(string $path): string
+    {
+        return self::directory_separator("public/{$path}");
+    }
+
+    /**
+     * returns image remove path.
+     *
+     */
+    private static function getRemovePath(string $imagePath): string
+    {
+        $imagePath = str_replace('storage/', 'public/', $imagePath);
+
+        return self::directory_separator($imagePath);
     }
 
     /**

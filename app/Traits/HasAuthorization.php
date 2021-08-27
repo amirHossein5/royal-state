@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Models\Permission;
 use App\Models\Role;
 
-trait Authorizable
+trait HasAuthorization
 {
     public function role()
     {
@@ -15,6 +15,11 @@ trait Authorizable
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function hasRole(string $roleName): bool
+    {
+        return $this->role->name === $roleName;
     }
 
     public function getAllPermissionsAttribute()
@@ -30,10 +35,10 @@ trait Authorizable
 
     public function hasPermission(string $permission): Bool
     {
-        return $this->allPermissions->contains('name',$permission);
+        return $this->allPermissions->contains('name', $permission);
     }
 
-    public function addPermission(string $permission)
+    public function addPermission(string $permission): mixed
     {
         $permissionId = Permission::givePermissionId($permission);
 

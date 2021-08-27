@@ -11,14 +11,27 @@ class Permission extends Model
 
     public $fillable = ['name'];
 
+    /**
+     * Relations.
+     *
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
 
-    public function scopeGivePermissionId($builder,string $permission): int
+    /**
+     * Scopes.
+     *
+     */
+    public function scopeGivePermissionId($query, string $permission): int
     {
-        return $builder->where('name', $permission)->first()->id;
-    }
+        $id = $query->where('name', $permission)->first()->id;
 
+        if (!$id) {
+            return "{$permission} not found.";
+        }
+
+        return $id;
+    }
 }

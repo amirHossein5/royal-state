@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Advertise extends Model
@@ -33,23 +34,31 @@ class Advertise extends Model
         'sell_status' => 'boolean'
     ];
 
-    public function category()
+    /**
+     * Relations
+     *
+     */
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'cat_id');
     }
 
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function scopeWithOwner($builder)
+    /**
+     * Scopes
+     *
+     */
+    public function scopeWithOwner($query)
     {
-        return $builder->with(['owner' => fn ($q) => $q->select('id', 'first_name', 'last_name')]);
+        return $query->with(['owner' => fn ($q) => $q->select('id', 'first_name', 'last_name')]);
     }
 
-    public function scopeWithCategory($builder)
+    public function scopeWithCategory($query)
     {
-        return $builder->with(['category' => fn ($q) => $q->select('name', 'id')]);
+        return $query->with(['category' => fn ($q) => $q->select('name', 'id')]);
     }
 }
