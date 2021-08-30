@@ -23,6 +23,7 @@ trait AuthorizableTest
     public function actWithRole(int $role_id): User
     {
         $user = User::factory()->create(['role_id' => $role_id]);
+        
         $this->actingAs($user);
 
         return $user;

@@ -13,7 +13,7 @@ class GalleryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,8 +24,15 @@ class GalleryRequest extends FormRequest
     public function rules()
     {
         return [
-            'advertise_id'=>'request|integer|exists:advertises,id',
-            'image'=>'required|image|file|max:1024'
+            'images'=>'required',
+            'images.*'=>'required|image|file|max:1024'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'images.*'=>'image'
         ];
     }
 }

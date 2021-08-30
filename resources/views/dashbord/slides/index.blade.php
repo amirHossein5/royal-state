@@ -11,7 +11,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">اسلاید</h4>
-                        <span><a href="{{ route('dashboard.slides.create') }}" class="btn btn-success">ایجاد</a></span>
+                        @can('create', 'App\\Models\Slide')
+                            <span><a href="{{ route('dashboard.slides.create') }}" class="btn btn-success">ایجاد</a></span>
+                        @endcan
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">
@@ -23,7 +25,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>عنوان</th>
-                                            <th>لینک</th>
                                             <th>آدرس</th>
                                             <th>مبلغ</th>
                                             <th>تصویر</th>
@@ -32,28 +33,30 @@
                                     </thead>
                                     <tbody>
 
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">{{ $loop->iteration }}</td>
-                                            <td>{{ $slide->title }}</td>
-                                            <td>{{ $slide->url }}</td>
-                                            <td>{{ $slide->address }}</td>
-                                            <td>{{ $slide->amount }} تومان</td>
-                                            <td><img style="width: 90px;"
-                                                    src="../admin-assets/images/elements/apple-watch.png" alt="">
-                                            </td>
-                                            <td style="min-width: 16rem; text-align: left;">
-                                                <a href="" class="btn btn-info waves-effect waves-light">ویرایش</a>
-                                                <x-dashboard.inline-form :confirm="true" method="delete"
-                                                    href="{{ route('dashboard.slides.destroy', $category->id) }}">
-                                                    حذف
-                                                </x-dashboard.inline-form>
-                                            </td>
-                                        </tr>
+                                        @foreach ($slides as $slide)
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1">{{ $loop->iteration }}</td>
+                                                <td>{{ $slide->advertise->title }}</td>
+                                                <td>{{ $slide->advertise->address }}</td>
+                                                <td>{{ $slide->advertise->amount }} تومان</td>
+                                                <td><img style="width: 90px;"
+                                                        src="{{ asset($slide->advertise->image['350_250']) }}" alt="">
+                                                </td>
+                                                <td style="min-width: 16rem; text-align: left;">
+                                                    @can('delete', 'App\\Models\Slide')
+                                                        <x-dashboard.inline-form :confirm="true" method="delete"
+                                                            href="{{ route('dashboard.slides.destroy', $slide->id) }}">
+                                                            حذف
+                                                        </x-dashboard.inline-form>
+                                                    @endcan
+                                                </td>
+                                            </tr>
+                                        @endforeach
 
                                     </tbody>
 
                                 </table>
-                                <x-pagination-links :class="$categories" />
+                                <x-pagination-links :class="$slides" />
 
                             </div>
                         </div>

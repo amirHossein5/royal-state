@@ -12,7 +12,7 @@ class CategoryObserver
 
     public function __construct()
     {
-        $this->categories   = DB::table('categories')
+        $this->categories = DB::table('categories')
             ->whereNull(['deleted_at'])
             ->get(['name', 'id']);
     }

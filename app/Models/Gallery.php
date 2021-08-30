@@ -9,8 +9,21 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    public function scopeWhereAdvertise($builder,int $advertiseId)
-    {
-        return $builder->where('advertise_id',$advertiseId)->latest();
-    }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'image', 'advertise_id'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'image' => 'array',
+    ];
 }

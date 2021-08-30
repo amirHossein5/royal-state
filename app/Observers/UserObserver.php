@@ -14,6 +14,8 @@ class UserObserver
      */
     public function creating(User $user)
     {
-        return $user->role_id = User::USER_ROLE;
+        return $user->role_id
+            ? ''
+            : $user->role_id = User::USER_ROLE;
     }
 }

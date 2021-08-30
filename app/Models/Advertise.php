@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Advertise extends Model
 {
@@ -48,17 +51,55 @@ class Advertise extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function galleries(): HasMany
+    {
+        return $this->hasMany(Gallery::class);
+    }
+
+    public function slide(): HasOne
+    {
+        return $this->hasOne(Slide::class);
+    }
+
     /**
      * Scopes
      *
      */
-    public function scopeWithOwner($query)
+    public function scopeWithOwner($query): Builder
     {
-        return $query->with(['owner' => fn ($q) => $q->select('id', 'first_name', 'last_name')]);
+        return $query->with('owner:first_name,last_name,id');
     }
 
-    public function scopeWithCategory($query)
+    public function scopeWithCategory($query): Builder
     {
-        return $query->with(['category' => fn ($q) => $q->select('name', 'id')]);
+        return $query->addSelect([
+            'category_name' => Category::select('name')
+                ->whereColumn('advertises.cat_id', 'categories.id')
+        ]);
+    }
+
+    /**
+     * Accssors
+     *
+     */
+    public function getStoreRoomStatusAttribute(): string
+    {
+        return $this->storeroom
+            ? 'دارد'
+            : 'ندارد';
+    }
+
+    public function getBalconyStatusAttribute(): string
+    {
+        return $this->balcony
+            ? 'دارد'
+            : 'ندارد';
+    }
+
+    public function getParkingStatusAttribute(): string
+    {
+        return $this->parking
+            ? 'دارد'
+            : 'ندارد';
     }
 }

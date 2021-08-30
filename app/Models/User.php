@@ -6,8 +6,10 @@ use App\Traits\HasAuthorization;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -16,6 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public const USER_ROLE = 1;
     public const ADMIN_ROLE = 2;
+    public const AUTHOR_ROLE = 3;
+    public const SALES_EXPERT_ROLE = 4;
 
     /**
      * The attributes that are mass assignable.
@@ -51,23 +55,24 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
+        'approved' => 'boolean'
     ];
 
     /**
      * relations.
      *
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function advertises()
+    public function advertises(): HasMany
     {
-        return $this->hasMany(Advertise::class);
+        return $this->hasMany(Advertise::class, 'user_id', 'id')->withTrashed();
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -76,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * accessors
      *
      */
-    public function getHasAdvertiseAttribute(int $id): Bool
+    public function hasAdvertise(int $id): Bool
     {
         return in_array($id, $this->advertises->map(fn ($item) => $item->id)->toArray());
     }
@@ -86,11 +91,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function getApprovedAttribute(): String
+    public function getApprovedStatusMinimalAttribute(): string
     {
         return $this->approved
             ? 'فعال'
             : 'غیرفعال';
+    }
+
+    public function getApprovedStatusAttribute(): string
+    {
+        return $this->approved
+            ? '<span class="text-success">فعال</span>'
+            : '<span class="text-danger">غیرفعال</span>';
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 class PermissionSeeder extends Seeder
 {
@@ -52,10 +53,16 @@ class PermissionSeeder extends Seeder
             'user_view_any',
             'user_approved',
             'user_update',
+
+            'slide_delete'
         ];
 
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);
         }
+
+        $permissionNames = Permission::pluck('name');
+
+        Cache::forever('permissions', $permissionNames);
     }
 }

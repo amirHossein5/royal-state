@@ -9,10 +9,7 @@ class PostService
 {
     public function store(array $request): Post
     {
-        $request['image'] = ImageService::make($request['image'])
-            ->folder('posts')
-            ->sizes(['79_80', '225_250', '730_547'])
-            ->save();
+        $request['image'] = $this->saveImage($request['image']);;
 
         $request['slug'] = make_slug($request['title']);
 
@@ -24,10 +21,7 @@ class PostService
         if (request()->has('image')) {
             ImageService::remove($post->image);
 
-            $request['image'] = ImageService::make($request['image'])
-                ->folder('posts')
-                ->sizes(['79_80', '225_250', '730_547'])
-                ->save();
+            $request['image'] = $this->saveImage($request['image']);
         }
 
         return $post->update($request);
@@ -38,5 +32,13 @@ class PostService
         ImageService::remove($post->image);
 
         $post->forceDelete();
+    }
+
+    private function saveImage(object $image): array
+    {
+        return ImageService::make($image)
+            ->folder('posts')
+            ->sizes(['79_80', '225_250', '730_547'])
+            ->save();
     }
 }

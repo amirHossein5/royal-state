@@ -16,22 +16,8 @@
                     <div class="card-content">
                         <div class="card-body card-dashboard">
 
-                            <form class="row" action="{{ route('dashboard.slides.create') }}" method="post"
-                                enctype="multipart/form-data">
-
-                                <div class="col-md-6">
-                                    <fieldset class="form-group">
-                                        <label for="title">عنوان</label>
-                                        <input value="{{ old('title') }}" name="title" type="text" id="title"
-                                            class="form-control" placeholder="عنوان ..."
-                                            {{ errorClass($errors, 'title') }}>
-                                        @error('title')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </fieldset>
-                                </div>
-
-
+                            <form class="row" action="{{ route('dashboard.slides.store') }}" method="post">
+                                @csrf
                                 <div class="col-md-6">
                                     <fieldset class="form-group">
                                         <label for="advertise_id">آگهی</label>
@@ -50,56 +36,6 @@
                                         @enderror
                                     </fieldset>
                                 </div>
-
-
-                                <div class="col-md-6">
-                                    <fieldset class="form-group">
-                                        <label for="address">آدرس</label>
-                                        <input value="{{ old('address') }}" name="address" type="text" id="address"
-                                            class="form-control" placeholder="آدرس ..."
-                                            {{ errorClass($errors, 'address') }}>
-                                        @error('address')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <fieldset class="form-group">
-                                        <label for="amount">مبلغ</label>
-                                        <input value="{{ old('amount') }}" name="amount" type="text" id="amount"
-                                            class="form-control" placeholder="مبلغ ..."
-                                            {{ errorClass($errors, 'amount') }}>
-                                        @error('amount')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </fieldset>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <fieldset class="form-group">
-                                        <label for="image">تصویر</label>
-                                        <input name="image" type="file" id="image" class="form-control-file "
-                                            {{ errorClass($errors, 'image') }}>
-                                        @error('image')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </fieldset>
-                                </div>
-
-
-                                <div class="col-md-12">
-                                    <section class="form-group">
-                                        <label for="body">متن</label>
-                                        <textarea class="form-control" id="body" rows="5" name="body" placeholder="متن ..."
-                                            {{ errorClass($errors, 'body') }}></textarea>
-                                        @error('body')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </section>
-                                </div>
-
 
                                 <div class="col-md-6">
                                     <section class="form-group">

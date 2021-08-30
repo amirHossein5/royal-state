@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -10,8 +11,10 @@ class DashboardTest extends TestCase
 {
     public function test_index_page_renders()
     {
-        $response = $this->get(route('dashboard.index'));
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $response->assertStatus(200);
+        $this->get(route('dashboard.index'))
+            ->assertStatus(200);
     }
 }

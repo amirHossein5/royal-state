@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\CommentCreated;
+use App\Models\User;
 use App\Notifications\CommentCreatedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,7 +20,7 @@ class SendEmailCommentCreatedListener
     public function handle(CommentCreated $event)
     {
         Notification::send(
-            $event->user_id,
+            User::find($event->user_id),
             new CommentCreatedNotification($event->comment, $event->parentComment)
         );
     }

@@ -11,8 +11,11 @@ use App\Http\Controllers\Dashboard\GalleryController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\AdvertiseController;
 use App\Http\Controllers\Dashboard\DashboardController;
-
-
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+use App\Models\User;
+use App\Notifications\CommentCreatedNotification;
+use Illuminate\Support\Facades\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,26 +68,62 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
             Route::get('/edit/{advertise}', [AdvertiseController::class, 'edit'])->name('edit');
             Route::put('/update/{advertise}', [AdvertiseController::class, 'update'])->name('update');
             Route::delete('/destroy/{advertise}/', [AdvertiseController::class, 'destroy'])->name('destroy');
-            Route::get('/{advertiseId}/gallery', [GalleryController::class, 'show'])->name('gallery.index');
-            Route::post('/{advertiseId}/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
             Route::delete('/force-delete/{id}', [AdvertiseController::class, 'forceDelete'])->name('forceDelete');
             Route::post('/restore/{id}', [AdvertiseController::class, 'restore'])->name('restore');
+
+            Route::name('gallery.')->prefix('{advertise}/')->group(function () {
+                Route::get('/gallery', [GalleryController::class, 'show'])->name('index');
+                Route::post('/gallery/store', [GalleryController::class, 'store'])->name('store');
+                Route::delete('/gallery/{gallery}/destroy', [GalleryController::class, 'destroy'])->name('destroy');
+            });
         });
 
         //slides
         Route::name('slides.')->middleware('can:viewAny,App\Models\Slide')->prefix('slides')->group(function () {
             Route::get('/', [SlideController::class, 'index'])->name('index');
             Route::get('/create', [SlideController::class, 'create'])->name('create');
-            Route::get('/destroy', [SlideController::class, 'destroy'])->name('destroy');
+            Route::post('/store', [SlideController::class, 'store'])->name('store');
+            Route::delete('/{slide}/destroy', [SlideController::class, 'destroy'])->name('destroy');
         });
 
 
         //users
         Route::name('users.')->middleware('can:viewAny,App\Models\User')->prefix('users')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
-            Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
-            Route::get('/update/{user}', [UserController::class, 'update'])->name('update');
-            Route::post('/approved/{user}', [UserController::class, 'approved'])->name('approved');
+
+            Route::prefix('/{user}')->group(function () {
+                Route::get('/edit', [UserController::class, 'edit'])->name('edit');
+                Route::put('/update', [UserController::class, 'update'])->name('update');
+                Route::post('/approved', [UserController::class, 'approved'])->name('approved');
+
+
+                Route::middleware('isAdmin')->group(function () {
+                    Route::prefix('/permissions')->name('permissions.')->group(function () {
+                        Route::get('/edit', [PermissionController::class, 'editUserPermissions'])->name('editUserPermissions');
+                        Route::put('/', [PermissionController::class, 'updateUserPermissions'])->name('updateUserPermissions');
+                    });
+
+                    Route::prefix('/role')->name('role.')->group(function () {
+                        Route::get('/edit', [UserController::class, 'editUserRole'])->name('edit');
+                        Route::put('/', [UserController::class, 'updateUserRole'])->name('update');
+                    });
+                });
+            });
+        });
+
+        //roles
+        Route::name('roles.')->middleware('isAdmin')->prefix('roles')->group(function () {
+            Route::get('/', [RoleController::class, 'index'])->name('index');
+            Route::get('/create', [RoleController::class, 'create'])->name('create');
+            Route::post('/', [RoleController::class, 'store'])->name('store');
+            Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+            Route::put('/{role}/', [RoleController::class, 'update'])->name('update');
+            Route::delete('/{role}/', [RoleController::class, 'delete'])->name('delete');
+
+            Route::prefix('/{role}/permissions')->name('permissions.')->group(function () {
+                Route::get('/edit', [PermissionController::class, 'editRolesPermissions'])->name('edit');
+                Route::put('/', [PermissionController::class, 'updateRolesPermissions'])->name('update');
+            });
         });
     });
 

@@ -23,7 +23,7 @@ class AuthService
         Auth::login($user);
     }
 
-    public static function register(object $user): User
+    public static function register(object $user): UserModel
     {
         $emailVerifiedAt = $user->email_verified === true
             ? now()->toDateTimeString()

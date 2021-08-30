@@ -6,12 +6,14 @@ use App\Events\CommentCreated;
 use App\Listeners\SendEmailCommentCreatedListener;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use App\Notifications\CommentCreatedNotification;
 use App\Traits\AuthorizableTest;
 use Database\Seeders\AssignRolePermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -62,9 +64,6 @@ class CommentTest extends TestCase
      */
     public function test_reply_in_comment()
     {
-        Event::fake(
-            CommentCreated::class
-        );
         Notification::fake();
 
         $this->actWithPermission([
@@ -86,7 +85,6 @@ class CommentTest extends TestCase
 
         $this->assertDatabaseCount('comments', 1);
 
-        Event::assertNothingDispatched();
         Notification::assertNothingSent();
 
         $this->post(route('dashboard.comments.store', [
@@ -94,17 +92,6 @@ class CommentTest extends TestCase
             'parent_id' => $comment->id,
             'comment' => 'test comment'
         ]))->assertRedirect(route('dashboard.comments.index'));
-
-        Event::assertDispatched(function (CommentCreated $event) use ($comment) {
-            return $event->user_id === $comment->user_id &&
-                $event->parentComment === $comment->comment &&
-                $event->comment === 'test comment';
-        });
-
-        Event::assertListening(
-            CommentCreated::class,
-            SendEmailCommentCreatedListener::class
-        );
 
         Notification::assertSentTo(
             $comment->user,

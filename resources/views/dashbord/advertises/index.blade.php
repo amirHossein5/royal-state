@@ -11,8 +11,10 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">آگهی</h4>
-                        <span><a href="{{ route('dashboard.advertises.create') }}"
-                                class="btn btn-success">ایجاد</a></span>
+                        @can('create', 'App\\Models\Advertise')
+                            <span><a href="{{ route('dashboard.advertises.create') }}"
+                                    class="btn btn-success">ایجاد</a></span>
+                        @endcan
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">
@@ -34,59 +36,76 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($ads as $advertise)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $advertise->title }}</td>
-                                                <td>{{ $advertise->category->name }}</td>
-                                                <td>{{ $advertise->address }}</td>
-                                                <td><img style="width: 90px;"
-                                                        src="{{ asset($advertise->image['350_250']) }}" alt="">
 
-                                                </td>
-                                                <td>
-                                                    <ul>
-                                                        <li>floor : {{ $advertise->floor }}</li>
-                                                        <li>year : {{ $advertise->year }}</li>
-                                                        <li>storeroom : {{ $advertise->storeroom }}</li>
-                                                        <li>balcony : {{ $advertise->balcony }}</li>
-                                                        <li>area : {{ $advertise->area }}</li>
-                                                        <li>room : {{ $advertise->room }}</li>
-                                                        <li>toilet : {{ $advertise->toilet }}</li>
-                                                        <li>parking : {{ $advertise->parking }}</li>
-                                                    </ul>
-                                                </td>
-                                                <td>{{ $advertise->tag }}</td>
-                                                <td>{{ $advertise->full_name }}
-                                                </td>
-                                                <td style="width: 22rem;">
-                                                    <a href="{{ route('dashboard.advertises.gallery.index', $advertise->id) }}"
-                                                        class="btn btn-warning">گالری</a>
-                                                    @if (!$advertise->deleted_at)
-                                                        <x-dashboard.btn-waves
-                                                            href="{{ route('dashboard.advertises.edit', $advertise->id) }}">
-                                                            ویرایش
-                                                        </x-dashboard.btn-waves>
+                                            @can('view', $advertise)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $advertise->title }}</td>
+                                                    <td>{{ $advertise->category_name }}</td>
+                                                    <td>{{ $advertise->address }}</td>
+                                                    <td><img style="width: 90px;"
+                                                            src="{{ asset($advertise->image['350_250']) }}" alt="">
 
-                                                        <x-dashboard.inline-form method="delete"
-                                                            href="{{ route('dashboard.advertises.destroy', $advertise->id) }}">
-                                                            حذف
-                                                        </x-dashboard.inline-form>
-                                                    @else
-                                                        <x-dashboard.inline-form
-                                                            href="{{ route('dashboard.advertises.restore', ['id' => $advertise->id]) }}">
-                                                            باز گرداندن
-                                                        </x-dashboard.inline-form>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>floor : {{ $advertise->floor }}</li>
+                                                            <li>year : {{ $advertise->year }}</li>
+                                                            <li>storeroom : {{ $advertise->store_room_status }}</li>
+                                                            <li>balcony : {{ $advertise->balcony_status }}</li>
+                                                            <li>area : {{ $advertise->area }}</li>
+                                                            <li>room : {{ $advertise->room }}</li>
+                                                            <li>toilet : {{ $advertise->toilet }}</li>
+                                                            <li>parking : {{ $advertise->parking_status }}</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td>{{ $advertise->tag }}</td>
+                                                    <td>{{ $advertise->owner->full_name }}
+                                                    </td>
+                                                    <td style="width: 22rem;">
+                                                        <a href="{{ route('dashboard.advertises.gallery.index', $advertise->id) }}"
+                                                            class="btn btn-warning">گالری</a>
+                                                        @if (!$advertise->deleted_at)
+                                                            @can('update', $advertise)
+                                                                <x-dashboard.btn-waves
+                                                                    href="{{ route('dashboard.advertises.edit', $advertise->id) }}">
+                                                                    ویرایش
+                                                                </x-dashboard.btn-waves>
+                                                            @endcan
 
-                                                        <x-dashboard.inline-form :confirm="true" method="delete"
-                                                            href="{{ route('dashboard.advertises.forceDelete', ['id' => $advertise->id]) }}">
-                                                            حذف کامل
-                                                        </x-dashboard.inline-form>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                            @can('delete', $advertise)
+                                                                <x-dashboard.inline-form method="delete"
+                                                                    href="{{ route('dashboard.advertises.destroy', $advertise->id) }}">
+                                                                    حذف
+                                                                </x-dashboard.inline-form>
+                                                            @endcan
+                                                        @else
+                                                            @can('restore', $advertise)
+                                                                <x-dashboard.inline-form
+                                                                    href="{{ route('dashboard.advertises.restore', ['id' => $advertise->id]) }}">
+                                                                    باز گرداندن
+                                                                </x-dashboard.inline-form>
+                                                            @endcan
+
+                                                            @can('forceDelete', $advertise)
+                                                                <x-dashboard.inline-form :confirm="true" method="delete"
+                                                                    href="{{ route('dashboard.advertises.forceDelete', ['id' => $advertise->id]) }}">
+                                                                    حذف کامل
+                                                                </x-dashboard.inline-form>
+                                                            @endcan
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endcan
+
                                         @endforeach
                                     </tbody>
                                 </table>
+
+                                <section class="d-flex justify-content-center">
+                                    {{ $ads->links() }}
+                                </section>
+
                             </div>
                         </div>
                     </div>

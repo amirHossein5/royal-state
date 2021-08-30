@@ -30,7 +30,20 @@ class AdvertisePolicy
      */
     public function view(User $user, Advertise $advertise)
     {
-        return $user->hasPermission('advertise_view') && $user->hasAdvertise($advertise->id);
+        return $this->accessAll($user) ||
+            ($user->hasPermission('advertise_view') &&
+                $user->hasAdvertise($advertise->id));
+    }
+
+    /**
+     * Determine whether the user access all the model.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function accessAll(User $user)
+    {
+        return $user->hasPermission('advertise_access_all');
     }
 
     /**
@@ -53,7 +66,9 @@ class AdvertisePolicy
      */
     public function update(User $user, Advertise $advertise)
     {
-        return $user->hasPermission('advertise_update') && $user->hasAdvertise($advertise->id);
+        return $this->accessAll($user) ||
+            ($user->hasPermission('advertise_update') &&
+                $user->hasAdvertise($advertise->id));
     }
 
     /**
@@ -65,7 +80,9 @@ class AdvertisePolicy
      */
     public function delete(User $user, Advertise $advertise)
     {
-        return $user->hasPermission('advertise_delete') && $user->hasAdvertise($advertise->id);
+        return $this->accessAll($user) ||
+            ($user->hasPermission('advertise_delete') &&
+                $user->hasAdvertise($advertise->id));
     }
 
     /**
@@ -77,7 +94,9 @@ class AdvertisePolicy
      */
     public function restore(User $user, Advertise $advertise)
     {
-        return $user->hasPermission('advertise_restore') && $user->hasAdvertise($advertise->id);
+        return $this->accessAll($user) ||
+            ($user->hasPermission('advertise_restore') &&
+                $user->hasAdvertise($advertise->id));
     }
 
     /**
@@ -89,6 +108,8 @@ class AdvertisePolicy
      */
     public function forceDelete(User $user, Advertise $advertise)
     {
-        return $user->hasPermission('advertise_force_delete') && $user->hasAdvertise($advertise->id);
+        return $this->accessAll($user) ||
+            ($user->hasPermission('advertise_force_delete') &&
+                $user->hasAdvertise($advertise->id));
     }
 }

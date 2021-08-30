@@ -53,7 +53,7 @@ class Comment extends Model
      * Accessors.
      *
      */
-    public function getApprovedStatusMinimalAttribute()
+    public function getApprovedStatusMinimalAttribute(): string
     {
         return $this->approved
             ? 'فعال'

@@ -17,8 +17,8 @@ class CommentCreatedNotification extends Notification implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private string $comment,
-        private string $parentComment
+        public string $comment,
+        public string $parentComment
     ) {
         //
     }

@@ -18,19 +18,7 @@ class SlidePolicy
      */
     public function viewAny(User $user)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, Slide $slide)
-    {
-        //
+        return $user->hasPermission('slide_view_any');
     }
 
     /**
@@ -41,54 +29,17 @@ class SlidePolicy
      */
     public function create(User $user)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user, Slide $slide)
-    {
-        //
+        return $user->hasPermission('slide_add');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Slide  $slide
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Slide $slide)
+    public function delete(User $user)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Slide $slide)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Slide $slide)
-    {
-        //
+        return $user->hasPermission('slide_delete');
     }
 }

@@ -30,7 +30,7 @@
                                     <tbody>
 
                                         @foreach ($comments as $comment)
- 
+
                                             @can('view', $comment)
                                                 <tr role="row" class="odd">
                                                     <td class="sorting_1">{{ $loop->iteration }}</td>
@@ -60,6 +60,10 @@
 
                                     </tbody>
                                 </table>
+
+                                <section class="d-flex justify-content-center">
+                                    {{ $comments->links() }}
+                                </section>
                             </div>
                         </div>
                     </div>

@@ -4,22 +4,46 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GalleryRequest;
+use App\Models\Advertise;
 use App\Models\Gallery;
+use App\Services\ImageService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class GalleryController extends Controller
 {
-    public function show($advertiseId)
+    public function show(Advertise $advertise): View
     {
-        $galleries = Gallery::whereAdvertise($advertiseId)->get();
+        $advertise->load('galleries');
 
-        return view('dashbord.ads.gallery', compact('galleries'));
+        return view('dashbord.advertises.gallery', compact('advertise'));
     }
 
-    public function store(GalleryRequest $request): RedirectResponse
+    public function store(Advertise $advertise, GalleryRequest $request): RedirectResponse
     {
-        Gallery::create($request->validated());
+        foreach ($request->images as $image) {
+            $image = ImageService::make($image)
+                ->folder('galleries')
+                ->sizes(['350_250', '730_400'])
+                ->save();
 
-        return redirect()->route('dashboard.advertises.gallery.index', $request['advertise_id'])->with('success', 'باموفقیت ساخته شد');
+            $advertise->galleries()->create([
+                'image' => $image
+            ]);
+        }
+
+        return redirect()
+            ->route('dashboard.advertises.gallery.index', $advertise->id)
+            ->with('success', 'باموفقیت ساخته شد');
+    }
+
+    public function destroy(Advertise $advertise, Gallery $gallery): RedirectResponse
+    {
+        if ($gallery->advertise_id === $advertise->id) {
+            $gallery->delete();
+        }
+
+        return back();
     }
 }

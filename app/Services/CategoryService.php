@@ -12,7 +12,7 @@ class CategoryService
 {
     public function getAll(): Collection|Builder
     {
-        return Cache::remember('allCategories', 60 * 60 * 24, function () {
+        return Cache::rememberForever('allCategories', function () {
             return DB::table('categories')
                 ->whereNull(['deleted_at'])
                 ->get(['name', 'id']);

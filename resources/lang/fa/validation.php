@@ -181,5 +181,9 @@ return [
         'storeroom' => 'انبار',
         'id' => 'شناسه',
         'comment' => 'نظر',
+        'image'   => 'عکس',
+        'advertise_id'              =>'شناسه تبلیغ',
+        'role_id' => 'نقش',
+        'persian_name'=>'نام فارسی'
     ],
 ];

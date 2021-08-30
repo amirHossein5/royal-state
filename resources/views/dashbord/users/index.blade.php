@@ -24,7 +24,7 @@
                                             <th>ایمیل</th>
                                             <th>نام</th>
                                             <th>نام خانوادگی</th>
-                                            <th>تصویر</th>
+                                            <th>نقش</th>
                                             <th>وضعیت</th>
                                             <th style="width: 22rem; text-align: left;">تنظیمات</th>
                                         </tr>
@@ -37,21 +37,39 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->first_name }}</td>
                                                 <td>{{ $user->last_name }}</td>
-                                                <td><img src="{{ asset('admin-assets/images/portrait/small/avatar-s-7.jpg') }}"
-                                                        style="width:6rem;" alt=""></td>
-                                                <td><span class="text-danger">{{ $user->approved() }}</span></td>
-                                                <td style="width: 22rem; text-align: left;">
+                                                <td>{{ $user->role->display_name }}</td>
+                                                <td>{!! $user->approved_status !!}</td>
+                                                <td style="width: 20rem; text-align: center;" class="d-flex flex-column">
+                                                    @can('update', 'App\\Models\User')
+                                                        <x-dashboard.btn-waves
+                                                            href="{{ route('dashboard.users.edit', $user->id) }}">
+                                                            ویرایش
+                                                        </x-dashboard.btn-waves>
+                                                    @endcan
+
+                                                    @isAdmin()
                                                     <x-dashboard.btn-waves
-                                                        href="{{ route('dashboard.users.edit', $user->id) }}">
-                                                        ویرایش
+                                                        href="{{ route('dashboard.users.permissions.editUserPermissions', $user->id) }}"
+                                                        color="warning" class="my-1">
+                                                        سطوح دسترسی
                                                     </x-dashboard.btn-waves>
 
                                                     <x-dashboard.btn-waves
-                                                        href="{{ route('dashboard.users.approved', $user->id) }}"
-                                                        color="warning">
+                                                        href="{{ route('dashboard.users.role.edit', $user->id) }}"
+                                                        color="danger" method="post" width='100%'>
                                                         تغییر
-                                                        وضعیت
+                                                        نقش
                                                     </x-dashboard.btn-waves>
+                                                    @endIsAdmin
+
+                                                    @can('approved', 'App\\Models\User')
+                                                        <x-dashboard.inline-form
+                                                            href="{{ route('dashboard.users.approved', $user->id) }}"
+                                                            method="post" width='100%' margin='my-1'>
+                                                            تغییر
+                                                            وضعیت
+                                                        </x-dashboard.inline-form>
+                                                    @endcan
 
                                                 </td>
                                             </tr>
@@ -59,7 +77,7 @@
 
                                     </tbody>
                                 </table>
-                                <x-pagination-links :class="$categories" />
+                                <x-pagination-links :class="$users" />
 
                             </div>
                         </div>

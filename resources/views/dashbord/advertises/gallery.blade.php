@@ -19,13 +19,17 @@
 
                             <form class="row" action="{{ route('dashboard.advertises.gallery.store', $advertise->id) }}"
                                 method="post" enctype="multipart/form-data">
-
+                                @csrf
                                 <div class="col-md-6">
                                     <fieldset class="form-group">
                                         <label for="image">تصویر</label>
-                                        <input name="image" type="file" id="image"
-                                            class="form-control-file {{ errorClass('image') }}">
-                                        @error('image')
+                                        <input name="images[]" multiple type="file" id="image"
+                                            class="form-control-file {{ errorClass($errors, 'image') }}">
+                                        @error('images.*')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+
+                                        @error('images')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </fieldset>
@@ -39,13 +43,20 @@
                             </form>
                             <div class="pt-4 mt-4 col-md-12">
                                 <div class="row">
-                                    @foreach ($galleries as $gallery)
+                                    @foreach ($advertise->galleries as $gallery)
                                         <div class="text-center col-md-3">
                                             <div>
-                                                <img style="width: 100%;" src="{{ asset($gallery->image) }}" alt="">
+                                                <img style="width: 100%;" src="{{ asset($gallery->image['350_250']) }}"
+                                                    alt="">
                                             </div>
-                                            <a class="mt-1 btn btn-danger"
-                                                href="{{ route('admin.ads.delete.gallery.image', $gallery->id) }}">حذف</a>
+
+                                            <form
+                                                action="{{ route('dashboard.advertises.gallery.destroy', [$advertise->id, $gallery->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger">حذف</button>
+                                            </form>
                                         </div>
                                     @endforeach
                                 </div>

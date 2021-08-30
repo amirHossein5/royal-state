@@ -26,7 +26,7 @@
                     <span class="menu-title" data-i18n="Email">خانه</span>
                 </a>
             </li>
-            
+
             @can('viewAny', 'App\\Models\Category')
                 <li class=" nav-item {{ request()->is('dashboard/categories*') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.categories.index') }}">
@@ -69,7 +69,7 @@
                     </a>
                 </li>
             @endcan
-            
+
             @can('viewAny', 'App\\Models\User')
                 <li class=" nav-item {{ request()->is('dashboard/users*') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.users.index') }}">
@@ -78,6 +78,15 @@
                     </a>
                 </li>
             @endcan
+
+            @isAdmin()
+                <li class=" nav-item {{ request()->is('dashboard/roles*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.roles.index') }}">
+                        <i class="feather icon-calendar"></i>
+                        <span class="menu-title" data-i18n="Calender">نقش ها</span>
+                    </a>
+                </li>
+            @endIsAdmin
 
         </ul>
     </div>
