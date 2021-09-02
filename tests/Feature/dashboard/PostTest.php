@@ -128,6 +128,7 @@ class PostTest extends TestCase
 
     private function createPostWithImage(): object
     {
+        $this->withoutExceptionHandling();
         $post = Post::factory()
             ->make()
             ->toArray();

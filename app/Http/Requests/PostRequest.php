@@ -29,7 +29,7 @@ class PostRequest extends FormRequest
             'published_at' => 'nullable|date|date_format:Y-m-d',
             'cat_id' => 'required|exists:categories,id',
             'body' => 'required',
-            'image' => "{$image}image|file"
+            'image' => "{$image}image|file|max:1024"
         ];
     }
 }

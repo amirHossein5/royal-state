@@ -4,12 +4,11 @@ namespace App\Services;
 
 use App\Models\Post;
 
-
 class PostService
 {
     public function store(array $request): Post
     {
-        $request['image'] = $this->saveImage($request['image']);;
+        $request['image'] = $this->saveImage($request['image']);
 
         $request['slug'] = make_slug($request['title']);
 
