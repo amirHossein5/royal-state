@@ -453,6 +453,55 @@
                                         @enderror
                                     </section>
 
+                                    <section class="mb-2 border-bottom-primary">
+                                        <h2>منو ها</h2>
+
+                                        <section>
+                                            <div>
+                                                <input type="checkbox" id="menu_create" value="menu_create"
+                                                    name="permissions[menu_create]"
+                                                    {{ hasPermission($permissions, 'menu_create') }}>
+                                                <label for="menu_create">
+                                                    <h5>ساخت منو</h5>
+                                                </label>
+                                            </div>
+
+                                            @error('permissions.menu_create')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </section>
+
+                                        <section>
+                                            <div>
+                                                <input type="checkbox" id="menu_delete" value="menu_delete"
+                                                    name="permissions[menu_delete]"
+                                                    {{ hasPermission($permissions, 'menu_delete') }}>
+                                                <label for="menu_create">
+                                                    <h5>حذف منو</h5>
+                                                </label>
+                                            </div>
+
+                                            @error('permissions.menu_delete')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </section>
+
+                                        <section>
+                                            <div>
+                                                <input type="checkbox" id="menu_edit" value="menu_edit"
+                                                    name="permissions[menu_edit]"
+                                                    {{ hasPermission($permissions, 'menu_edit') }}>
+                                                <label for="menu_edit">
+                                                    <h5>ویرایش منو</h5>
+                                                </label>
+                                            </div>
+
+                                            @error('permissions.menu_edit')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </section>
+                                    </section>
+
                                     <section class="text-center">
                                         <input type="submit" class="btn btn-primary" value="ویرایش">
                                     </section>

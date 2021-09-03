@@ -54,7 +54,12 @@ class PermissionSeeder extends Seeder
             'user_approved',
             'user_update',
 
-            'slide_delete'
+            'slide_delete',
+
+            'menu_view_any',
+            'menu_create',
+            'menu_update',
+            'menu_delete'
         ];
 
         foreach ($permissions as $permission) {

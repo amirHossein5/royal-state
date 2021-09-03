@@ -102,4 +102,16 @@ class Advertise extends Model
             ? 'دارد'
             : 'ندارد';
     }
+
+    public function getSellStatusAttribute(): string
+    {
+        return $this->sell_status === 0
+            ? 'خرید'
+            : 'اجاره';
+    }
+
+    public function getHomeType(): string
+    {
+        // return match($this->type);
+    }
 }

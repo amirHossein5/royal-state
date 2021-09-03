@@ -46,8 +46,11 @@ class CategoryController extends Controller
     {
         $this->authorize('update', $category);
 
+        $category->load('parent');
+
         $categories = (new CategoryService)
-            ->getAll($category->id);
+            ->getAll()
+            ->where('id','!=',$category->id);
 
         return view('dashbord.categories.edit', compact('category', 'categories'));
     }

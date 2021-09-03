@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\App\HomeController;
+use App\Http\Controllers\App\PostController as AppPostController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\AuthSocialiteController;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +12,13 @@ use App\Http\Controllers\Dashboard\CommentController;
 use App\Http\Controllers\Dashboard\GalleryController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\AdvertiseController;
+use App\Http\Controllers\App\AdvertiseController as AppAdvertiseController;
+use App\Http\Controllers\App\MenuController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Models\Menu;
 use App\Models\User;
 use App\Notifications\CommentCreatedNotification;
 use Illuminate\Support\Facades\Notification;
@@ -38,6 +44,16 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
             Route::delete('/destroy/{category}', [CategoryController::class, 'destroy'])->name('destroy');
             Route::delete('/force-delete/{id}', [CategoryController::class, 'forceDelete'])->name('forceDelete');
             Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('restore');
+        });
+
+        //menus
+        Route::name('menus.')->middleware('can:viewAny,App\Models\Menu')->prefix('menus')->group(function () {
+            Route::get('/', [MenuController::class, 'index'])->name('index');
+            Route::get('/create', [MenuController::class, 'create'])->name('create');
+            Route::get('/edit/{menu:slug}', [MenuController::class, 'edit'])->name('edit');
+            Route::put('/', [MenuController::class, 'update'])->name('update');
+            Route::post('/store', [MenuController::class, 'store'])->name('store');
+            Route::delete('/destroy/{id}', [MenuController::class, 'destroy'])->name('destroy');
         });
 
         //posts
@@ -125,7 +141,30 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
                 Route::put('/', [PermissionController::class, 'updateRolesPermissions'])->name('update');
             });
         });
+
+        //settings
+        Route::name('settings.')->middleware('isAdmin')->prefix('settings')->group(function () {
+            Route::get('/edit', [SettingController::class, 'edit'])->name('edit');
+            Route::put('/', [SettingController::class, 'update'])->name('update');
+        });
     });
+
+
+
+/*
+|--------------------------------------------------------------------------
+| App Routes
+|--------------------------------------------------------------------------
+*/
+Route::name('app.')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
+    Route::get('/advertises', [AppAdvertiseController::class, 'index'])->name('advertises');
+    Route::get('/advertises/{advertise}', [AppAdvertiseController::class, 'show'])->name('advertises.show');
+    Route::get('/posts', [AppPostController::class, 'index'])->name('posts');
+    Route::get('/posts/{post:slug}', [AppPostController::class, 'show'])->name('posts.show');
+});
+
 
 
 /*

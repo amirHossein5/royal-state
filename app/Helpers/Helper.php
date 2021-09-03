@@ -39,7 +39,7 @@ function oldEqualsSelected(int|string $old, int|string $expected): ?String
  */
 function oldOrValueSelected(
     null|int|string $old,
-    int|string $value,
+    null|int|string $value,
     int|string $expected
 ): ?String {
     if (old($old)) {
@@ -53,8 +53,10 @@ function oldOrValueSelected(
  * returns old if exists or value if exists.
  *
  */
-function oldOrValue(null|int|string $old, int|string $value): String
-{
+function oldOrValue(
+    null|int|string $old,
+    null|int|string $value
+): ?String {
     return old($old) ?? $value;
 }
 

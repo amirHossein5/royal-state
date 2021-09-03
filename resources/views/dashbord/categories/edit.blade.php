@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">
-                            <form class="row" action="{{ route('dashboard.categories.update', $category->id) }}"
+                            <form class="row" action="{{ route('dashboard.categories.update',[ $category->id,'id'=>$category->id]) }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('put')

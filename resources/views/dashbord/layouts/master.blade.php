@@ -3,6 +3,7 @@
 
 <head>
     @include('dashbord.layouts.partials.head-tag')
+    
     @yield('head-tag')
 </head>
 

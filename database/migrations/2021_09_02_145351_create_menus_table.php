@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateViewsTable extends Migration
+class CreateMenusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('views', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('posts', 'id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreignId('user_id')->nullable()->constrained('users', 'id')
+            $table->enum('type', ['footer', 'header']);
+            $table->string('url');
+            $table->string('name')->unique();
+            $table->foreignId('parent_id')
+                ->nullable()
+                ->constrained('menus')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->timestamps();
@@ -32,6 +34,6 @@ class CreateViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('views');
+        Schema::dropIfExists('menus');
     }
 }

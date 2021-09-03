@@ -4,7 +4,7 @@
     <div class="navbar-header">
         <ul class="flex-row nav navbar-nav">
             <li class="mr-auto nav-item">
-                <a class="navbar-brand" href="">
+                <a class="navbar-brand" href="{{ route('app.index') }}">
                     <div class="brand-logo"></div>
                     <h2 class="mb-0 brand-text">املاک</h2>
                 </a>
@@ -32,6 +32,14 @@
                     <a href="{{ route('dashboard.categories.index') }}">
                         <i class="feather icon-check-square"></i>
                         <span class="menu-title" data-i18n="Todo">دسته بندی</span></a>
+                </li>
+            @endcan
+
+            @can('viewAny', 'App\\Models\Menu')
+                <li class=" nav-item {{ request()->is('dashboard/menus*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.menus.index') }}">
+                        <i class="feather icon-check-square"></i>
+                        <span class="menu-title" data-i18n="Todo">منو ها</span></a>
                 </li>
             @endcan
 
@@ -84,6 +92,16 @@
                     <a href="{{ route('dashboard.roles.index') }}">
                         <i class="feather icon-calendar"></i>
                         <span class="menu-title" data-i18n="Calender">نقش ها</span>
+                    </a>
+                </li>
+            @endIsAdmin
+
+
+            @isAdmin()
+                <li class=" nav-item {{ request()->is('dashboard/settings*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.settings.edit') }}">
+                        <i class="feather icon-calendar"></i>
+                        <span class="menu-title" data-i18n="Calender">تنظیمات</span>
                     </a>
                 </li>
             @endIsAdmin

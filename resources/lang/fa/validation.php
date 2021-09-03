@@ -184,6 +184,9 @@ return [
         'image'   => 'عکس',
         'advertise_id'              =>'شناسه تبلیغ',
         'role_id' => 'نقش',
-        'persian_name'=>'نام فارسی'
+        'persian_name'=>'نام فارسی',
+        'site_name'=>'نام سایت',
+        'short_description'=>'توضیحات کوتاه',
+        'long_description' => 'توضیحات کامل'
     ],
 ];

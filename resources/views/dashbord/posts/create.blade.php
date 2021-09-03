@@ -98,7 +98,7 @@
     </section>
 @endsection
 
-@section('scripts')
+@section('script')
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
     <script type="text/javascript">
