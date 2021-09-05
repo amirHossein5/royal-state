@@ -34,7 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'role_id',
         'social_id',
         'social_type',
-        'email_verified_at'
+        'email_verified_at',
+        'phone'
     ];
 
     /**

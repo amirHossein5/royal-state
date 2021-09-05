@@ -10,17 +10,40 @@ class AuthService
 {
     private static $user;
 
-    public static function loginOrRegister(): Void
+    public static function loginOrRegister(bool $socialite_register = true): AuthService
     {
-        $findUser = UserModel::where('social_id', self::$user->id)->first();
-
-        if ($findUser) {
-            Auth::login($findUser);
-            return;
+        if ($socialite_register) {
+            $findUser = UserModel::where('social_id', self::$user->id)->first();
+        } else {
+            $findUser = UserModel::where('email', self::$user->email)->first();
         }
 
-        $user = self::register((object) self::$user->user);
+        if ($findUser) {
+            self::$user = $findUser;
+            Auth::login($findUser);
+            return new static();
+        }
+
+        if ($socialite_register) {
+            $user = self::register((object) self::$user->user);
+        } else {
+            $user = self::simpleRegister((object) self::$user->user);
+        }
+
+        self::$user = $user;
         Auth::login($user);
+
+        return new static();
+    }
+
+    public static function simpleRegister(object $user): UserModel
+    {
+        return UserModel::create([
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'password' => bycript($user->password)
+        ]);
     }
 
     public static function register(object $user): UserModel
@@ -39,9 +62,15 @@ class AuthService
         ]);
     }
 
-    public static function setUser(User $user): AuthService
+    public static function get(): UserModel
+    {
+        return self::$user;
+    }
+
+    public static function setUser(User|array $user): AuthService
     {
         self::$user = (object) $user;
+
         return new static();
     }
 }

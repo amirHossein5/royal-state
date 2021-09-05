@@ -3,7 +3,6 @@
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\PostController as AppPostController;
 use App\Http\Controllers\Auth\SocialiteController;
-use App\Http\Controllers\AuthSocialiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\PostController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -13,15 +12,14 @@ use App\Http\Controllers\Dashboard\GalleryController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\AdvertiseController;
 use App\Http\Controllers\App\AdvertiseController as AppAdvertiseController;
+use App\Http\Controllers\App\CommentController as AppCommentController;
 use App\Http\Controllers\App\MenuController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
-use App\Models\Menu;
-use App\Models\User;
-use App\Notifications\CommentCreatedNotification;
-use Illuminate\Support\Facades\Notification;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +31,13 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
     ->namespace('Dashboard')->group(function () {
 
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+        //edit profile informaiton
+        Route::name('profile.')->prefix('profile/')->group(function () {
+            Route::get('/edit/{user:first_name}', [ProfileController::class, 'edit'])->name('edit');
+            Route::put('/', [ProfileController::class, 'update'])->name('update');
+            Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+        });
 
         //categories
         Route::name('categories.')->middleware('can:viewAny,App\Models\Category')->prefix('categories')->group(function () {
@@ -163,6 +168,7 @@ Route::name('app.')->group(function () {
     Route::get('/advertises/{advertise}', [AppAdvertiseController::class, 'show'])->name('advertises.show');
     Route::get('/posts', [AppPostController::class, 'index'])->name('posts');
     Route::get('/posts/{post:slug}', [AppPostController::class, 'show'])->name('posts.show');
+    Route::post('/posts/{post:slug}/comments', [AppCommentController::class, 'store'])->name('comments.store');
 });
 
 

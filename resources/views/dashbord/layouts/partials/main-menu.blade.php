@@ -27,6 +27,12 @@
                 </a>
             </li>
 
+            <li class=" nav-item {{ request()->is('dashboard/profile*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.profile.edit',auth()->user()->first_name) }}">
+                    <i class="feather icon-check-square"></i>
+                    <span class="menu-title" data-i18n="Todo">ویرایش اطلاعات پروفایل</span></a>
+            </li>
+
             @can('viewAny', 'App\\Models\Category')
                 <li class=" nav-item {{ request()->is('dashboard/categories*') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.categories.index') }}">
@@ -88,22 +94,22 @@
             @endcan
 
             @isAdmin()
-                <li class=" nav-item {{ request()->is('dashboard/roles*') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.roles.index') }}">
-                        <i class="feather icon-calendar"></i>
-                        <span class="menu-title" data-i18n="Calender">نقش ها</span>
-                    </a>
-                </li>
+            <li class=" nav-item {{ request()->is('dashboard/roles*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.roles.index') }}">
+                    <i class="feather icon-calendar"></i>
+                    <span class="menu-title" data-i18n="Calender">نقش ها</span>
+                </a>
+            </li>
             @endIsAdmin
 
 
             @isAdmin()
-                <li class=" nav-item {{ request()->is('dashboard/settings*') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.settings.edit') }}">
-                        <i class="feather icon-calendar"></i>
-                        <span class="menu-title" data-i18n="Calender">تنظیمات</span>
-                    </a>
-                </li>
+            <li class=" nav-item {{ request()->is('dashboard/settings*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.settings.edit') }}">
+                    <i class="feather icon-calendar"></i>
+                    <span class="menu-title" data-i18n="Calender">تنظیمات</span>
+                </a>
+            </li>
             @endIsAdmin
 
         </ul>

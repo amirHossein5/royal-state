@@ -30,7 +30,8 @@
 
                                     @if ($setting->logo ?? '')
                                         <section>
-                                            <img src="{{ asset($setting->logo ?? '') }}" width="50px" height="50px" alt="logo">
+                                            <img src="{{ asset($setting->logo ?? '') }}" width="50px" height="50پثpx"
+                                                alt="logo">
                                         </section>
                                     @endif
                                 </div>
@@ -90,9 +91,10 @@
                                 <div class="col-md-12">
                                     <fieldset class="form-group">
                                         <label for="short_description">توضیحات کوتاه</label>
-                                        <input name="short_description" type="text" id="short_description"
-                                            value="{{ oldOrValue('short_description', $setting->short_description ?? '') }}"
+                                        <textarea name="short_description" type="text" id="short_description"
                                             placeholder="توضیحات کوتاه ...">
+                                            {{ oldOrValue('short_description', $setting->short_description ?? '') }}
+                                            </textarea>
                                     </fieldset>
                                     @error('short_description')
                                         <span class="text-danger">{{ $message }}</span>
@@ -103,9 +105,10 @@
                                 <div class="col-md-12">
                                     <fieldset class="form-group">
                                         <label for="long_description">توضیحات کامل</label>
-                                        <input name="long_description" type="text" id="long_description"
-                                            value="{{ oldOrValue('long_description', $setting->long_description ?? '') }}"
+                                        <textarea name="long_description" type="text" id="long_description"
                                             class="form-control" placeholder="توضیحات کامل ...">
+                                            {{ oldOrValue('long_description', $setting->long_description ?? '') }}
+                                        </textarea>
                                     </fieldset>
                                     @error('long_description')
                                         <span class="text-danger">{{ $message }}</span>
@@ -130,12 +133,7 @@
                                                             </label>
 
                                                             <input type="text" class="form-control"
-                                                                value="{{
-                                                                oldOrValue(
-                                                                    "social_medias[{ $loop->index }][url]",
-                                                                    $social_media['url']
-                                                                    )
-                                                                }}"
+                                                                value="{{ oldOrValue("social_medias[{ $loop->index }][url]", $social_media['url']) }}"
                                                                 name="social_medias[{{ $loop->index }}][url]">
                                                             @error("social_medias.$loop->index.url")
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -147,38 +145,18 @@
                                                                 لوگو
                                                             </label>
 
-                                                            <select name="social_medias[{{ $loop->index }}][logo]" id="" class="form-control">
+                                                            <select name="social_medias[{{ $loop->index }}][logo]" id=""
+                                                                class="form-control">
                                                                 <option value="icon-twitter"
-                                                                    {{
-                                                                        oldOrValueSelected(
-                                                                            "social_medias[{ $loop->index }][logo]",
-                                                                            $social_media['logo'],
-                                                                            'icon-twitter'
-                                                                        )
-                                                                    }}
-                                                                >
+                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-twitter') }}>
                                                                     twitter
                                                                 </option>
                                                                 <option value="icon-facebook"
-                                                                    {{
-                                                                        oldOrValueSelected(
-                                                                            "social_medias[{ $loop->index }][logo]",
-                                                                            $social_media['logo'],
-                                                                            'icon-facebook'
-                                                                        )
-                                                                    }}
-                                                                >
+                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-facebook') }}>
                                                                     facebook
                                                                 </option>
                                                                 <option value="icon-instagram"
-                                                                    {{
-                                                                        oldOrValueSelected(
-                                                                            "social_medias[{ $loop->index }][logo]",
-                                                                            $social_media['logo'],
-                                                                            'icon-instagram'
-                                                                        )
-                                                                    }}
-                                                                >
+                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-instagram') }}>
                                                                     instagram
                                                                 </option>
                                                             </select>
@@ -203,11 +181,7 @@
                                                             </label>
 
                                                             <input type="text" class="form-control"
-                                                                value="{{
-                                                                oldOrValue(
-                                                                    "social_medias[{ $loop->index }][url]",
-                                                                    $social_media['url'])
-                                                                }}"
+                                                                value="{{ oldOrValue("social_medias[{ $loop->index }][url]", $social_media['url']) }}"
                                                                 name="social_medias[{{ $loop->index }}][url]">
 
                                                             @error("social_medias.$loop->index.url")
@@ -220,38 +194,18 @@
                                                                 لوگو
                                                             </label>
 
-                                                            <select name="social_medias[{{ $loop->index }}][logo]"    class="form-control">
+                                                            <select name="social_medias[{{ $loop->index }}][logo]"
+                                                                class="form-control">
                                                                 <option value="icon-twitter"
-                                                                    {{
-                                                                        oldOrValueSelected(
-                                                                            "social_medias[{ $loop->index }][logo]",
-                                                                            $social_media['logo'],
-                                                                            'icon-twitter'
-                                                                        )
-                                                                    }}
-                                                                >
+                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-twitter') }}>
                                                                     twitter
                                                                 </option>
                                                                 <option value="icon-facebook"
-                                                                    {{
-                                                                        oldOrValueSelected(
-                                                                            "social_medias[{ $loop->index }][logo]",
-                                                                            $social_media['logo'],
-                                                                            'icon-facebook'
-                                                                        )
-                                                                    }}
-                                                                >
+                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-facebook') }}>
                                                                     facebook
                                                                 </option>
                                                                 <option value="icon-instagram"
-                                                                    {{
-                                                                        oldOrValueSelected(
-                                                                            "social_medias[{ $loop->index }][logo]",
-                                                                            $social_media['logo'],
-                                                                            'icon-instagram'
-                                                                        )
-                                                                    }}
-                                                                >
+                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-instagram') }}>
                                                                     instagram
                                                                 </option>
                                                             </select>
@@ -290,7 +244,7 @@
         </div>
     </section>
 
-    @endsection
+@endsection
 
 @section('script')
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
@@ -314,12 +268,8 @@
                             </label>
 
                             <input type="text" class="form-control"
-                                value="{{
-                                    old(
-                                        "social_medias[`+index+`][url]"
-                                     )
-                                }}"
-                                name="social_medias[`+index+`][url]"
+                                value="{{ old('social_medias[`+index+`][url]') }}"
+                                name="social_medias[` + index + `][url]"
                             >
                         </section>
 
@@ -328,34 +278,19 @@
                                 لوگو
                             </label>
 
-                            <select name="social_medias[`+index+`][logo]" id="" class="form-control">
+                            <select name="social_medias[` + index + `][logo]" id="" class="form-control">
                                 <option value="icon-twitter"
-                                    {{
-                                        oldEqualsSelected(
-                                            "social_medias[`+index+`][logo]",
-                                            'icon-twitter'
-                                        )
-                                    }}
+                                    {{ oldEqualsSelected('social_medias[`+index+`][logo]', 'icon-twitter') }}
                                     >
                                         twitter
                                 </option>
                                 <option value="icon-facebook"
-                                    {{
-                                        oldEqualsSelected(
-                                            "social_medias[`+index+`][logo]",
-                                            'icon-facebook'
-                                        )
-                                    }}
+                                    {{ oldEqualsSelected('social_medias[`+index+`][logo]', 'icon-facebook') }}
                                 >
                                     facebook
                                 </option>
                                 <option value="icon-instagram"
-                                    {{
-                                        oldEqualsSelected(
-                                            "social_medias[`+index+`][logo]",
-                                            'icon-instagram'
-                                        )
-                                    }}
+                                    {{ oldEqualsSelected('social_medias[`+index+`][logo]', 'icon-instagram') }}
                                 >
                                     instagram
                                 </option>

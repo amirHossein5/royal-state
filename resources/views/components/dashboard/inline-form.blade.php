@@ -7,6 +7,7 @@
     @if ($confirm)
         onclick="return window.confirm('مطمین هستید؟')"
     @endif
+
 >
 
     @csrf

@@ -76,7 +76,7 @@
                                                 @foreach ($menus as $item)
 
                                                     <option value="{{ $item->id }}"
-                                                        {{ oldEqualsSelected('parent_id', $menu->parent->id ?? '', $item->id) }}>
+                                                        {{ oldEqualsSelected('parent_id',$item->id) }}>
                                                         {{ $item->name }}
                                                     </option>
 
@@ -105,6 +105,7 @@
             </div>
         </div>
     </section>
+    
 @endsection
 
 @section('script')

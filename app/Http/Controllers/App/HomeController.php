@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Models\Advertise;
 use App\Models\Post;
+use App\Models\Setting;
 use App\Models\Slide;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class HomeController extends Controller
 
         $latestBlogs = Post::withCount('comments')
             ->with('author:id,name')
-            ->where('published_at','>=',now())
+            ->where('published_at', '>=', now())
             ->latest()
             ->take(10)
             ->get();
@@ -40,12 +41,22 @@ class HomeController extends Controller
         //     $item->created_at
         // });
 
-
-        return view('app.index', compact('sliders', 'latestAdvertises', 'bestAdvertises', 'interstingFacts', 'latestBlogs'));
+        return view(
+            'app.index',
+            compact(
+                'sliders',
+                'latestAdvertises',
+                'bestAdvertises',
+                'interstingFacts',
+                'latestBlogs'
+            )
+        );
     }
 
     public function about(): View
     {
-        return view('app.about');
+        $setting = Setting::first('long_description');
+
+        return view('app.about',compact('setting'));
     }
 }
