@@ -40,7 +40,7 @@
                                                 <td>{{ $slide->advertise->address }}</td>
                                                 <td>{{ $slide->advertise->amount }} تومان</td>
                                                 <td><img style="width: 90px;"
-                                                        src="{{ asset($slide->advertise->image['350_250']) }}" alt="">
+                                                        src="{{ asset($slide->advertise->image) }}" alt="">
                                                 </td>
                                                 <td style="min-width: 16rem; text-align: left;">
                                                     @can('delete', 'App\\Models\Slide')

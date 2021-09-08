@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Events\CommentCreated;
 use App\Listeners\SendEmailCommentCreatedListener;
 use App\Models\Advertise;
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\User;
@@ -46,6 +45,5 @@ class EventServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
         Advertise::observe(AdvertiseObserver::class);
         User::observe(UserObserver::class);
-        Category::observe(CategoryObserver::class);
     }
 }

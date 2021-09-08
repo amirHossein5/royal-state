@@ -70,9 +70,16 @@ class ImageService
      */
     public static function remove(array|string $path): Void
     {
-        foreach ($path as $image) {
-            Storage::delete(self::getRemovePath($image));
+        if (is_array($path)) {
+            foreach ($path as $image) {
+                Storage::delete(self::getRemovePath($image));
+            }
+
+            return;
         }
+
+        Storage::delete(self::getRemovePath($path));
+        return;
     }
 
     /**
@@ -150,7 +157,7 @@ class ImageService
      */
     private static function saveImage(object $image, string $path): String
     {
-        $filename = self::time() . '.' . $image->getClientOriginalExtension();
+        $filename = self::time(). rand(1,60) . '.' . $image->getClientOriginalExtension();
 
         $image->storeAs(self::stick_public($path), $filename);
 

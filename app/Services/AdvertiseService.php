@@ -24,11 +24,10 @@ class AdvertiseService
         return $advertise->update($request);
     }
 
-    private function saveImage(object $image): array
+    private function saveImage(object $image): string
     {
         return ImageService::make($image)
             ->folder('advertises1')
-            ->sizes(['350_250', '730_400'])
             ->save();
     }
 }

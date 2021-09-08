@@ -25,7 +25,6 @@ class GalleryController extends Controller
         foreach ($request->images as $image) {
             $image = ImageService::make($image)
                 ->folder('galleries')
-                ->sizes(['350_250', '730_400'])
                 ->save();
 
             $advertise->galleries()->create([
@@ -41,6 +40,8 @@ class GalleryController extends Controller
     public function destroy(Advertise $advertise, Gallery $gallery): RedirectResponse
     {
         if ($gallery->advertise_id === $advertise->id) {
+            ImageService::remove($gallery->image);
+
             $gallery->delete();
         }
 

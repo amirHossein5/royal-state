@@ -23,6 +23,7 @@ class SocialiteController extends Controller
 
             return redirect()->route('dashboard.index');
         } catch (\Exception $e) {
+
             return $e->getMessage();
         }
     }

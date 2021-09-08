@@ -23,8 +23,9 @@ class SettingController extends Controller
     {
         $request = $request->validated();
 
-        if (array_key_exists('logo',$request)) {
-            // Storage::cleanDirectory('app/public/images/settings');
+        if (array_key_exists('logo', $request)) {
+            $files = Storage::allFiles('public/images/settings');
+            Storage::delete($files);
 
             $request['logo'] = str_replace(
                 'public',

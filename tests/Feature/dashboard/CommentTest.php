@@ -6,6 +6,7 @@ use App\Events\CommentCreated;
 use App\Listeners\SendEmailCommentCreatedListener;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\User;
 use App\Notifications\CommentCreatedNotification;
 use App\Traits\AuthorizableTest;
@@ -22,7 +23,7 @@ class CommentTest extends TestCase
 {
     use RefreshDatabase, AuthorizableTest;
 
-    protected $seeder = AssignRolePermissionsSeeder::class;
+    protected $seed = true;
 
     /**
      * test_comments_index_page_renders_properly

@@ -12,19 +12,32 @@ class AdvertiseController extends Controller
 {
     public function index(): View
     {
-        $advertises = Advertise::paginate(9);
+        if (request()->has('category')) {
+            $advertises = Advertise::whereCategory(request()->category)->paginate(9);
+        } elseif (request()->has('address')) {
+            $advertises = Advertise::where('address', 'LIKE', "%" . request()->address . "%")->paginate(9);
+        } else {
+            $advertises = Advertise::paginate(9);
+        }
 
         return view('app.advertises.index', compact('advertises'));
     }
 
     public function show(Advertise $advertise): View
     {
-        $latestPosts = Post::withCount('comments')
+        $advertise->load('galleries');
+
+        $latestBlogs = Post::withCount('comments')
             ->with('author:id,first_name')
             ->latest()
             ->take(5)
             ->get();
 
-        return view('app.advertises.show', compact('advertise', 'latestPosts'));
+        $relatedAdvertises = Advertise::query()
+            ->where('cat_id', $advertise->cat_id)
+            ->where('id', '!=', $advertise->id)
+            ->get();
+
+        return view('app.advertises.show', compact('advertise', 'latestBlogs', 'relatedAdvertises'));
     }
 }

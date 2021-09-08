@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -36,13 +38,26 @@ class ProfileController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
-            'email'=>'exists:users,email'
+            'email' => 'exists:users,email'
         ]);
 
-        User::where('email',$request->email)
+        Auth::logout();
+
+        User::where('email', $request->email)
             ->delete();
 
         return redirect()
             ->route('app.index');
+    }
+
+    public function resetPassword(ResetPasswordRequest $request, User $user): RedirectResponse
+    {
+        $user->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        return redirect()
+            ->route('dashboard.profile.edit', $user->first_name)
+            ->with('success', 'با موفقیت تغییر یافت');
     }
 }

@@ -3,7 +3,7 @@
 
 
 <div class="sidebar-box ftco-animate">
-    <h3>اخرین{{ $type }}</h3>
+    <h3>اخرین {{ $type }}</h3>
 
     @if ($type === 'آگهی ها')
 
@@ -14,7 +14,11 @@
                 </a>
                 <div class="text">
                     <h3 class="heading">
-                        <a href="{{ route('app.advertises.show', $item->id) }}">{{ $item->title }} </a>
+                        <a href="{{ route('app.advertises.show', $item->id) }}"
+                            style="font-family: Vazir !important"
+                            >
+                            {{ $item->title }}
+                        </a>
                     </h3>
                 </div>
             </div>
@@ -28,20 +32,19 @@
                     style="background-image: url({{ asset($item->image) }});">
                 </a>
                 <div class="text">
-                    <h3 class="heading"><a href="#">{{ $item->title }} </a></h3>
+                    <h3 class="heading">
+                        <a href="{{ route('app.posts.show', $item->slug) }}"
+                            style="font-family: Vazir !important"
+                            >
+                            {{ $item->title }}
+                        </a>
+                    </h3>
                     <div class="meta">
                         <div>
                             <a href="{{ route('app.posts.show', $item->slug) }}">
                                 <span class="icon-calendar">
                                 </span>
-                                {{ $item->created_at }}
-                            </a>
-                        </div>
-                        <div>
-                            <a href="{{ route('app.posts.show', $item->slug) }}">
-                                <span class="icon-person">
-                                </span>
-                                {{ $item->author->name }}
+                                {{ jdate($item->created_at)->format('%A, %d %B %Y') }}
                             </a>
                         </div>
                         <div>

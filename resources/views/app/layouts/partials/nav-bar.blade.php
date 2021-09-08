@@ -12,7 +12,7 @@
 
                 @foreach ($menus as $menu)
                     <li class="nav-item active">
-                        <a href="{{ $menu->url }}" class="nav-link">
+                        <a href="{{ url( $menu->url ) }}" class="nav-link">
                             {{ $menu->name }}
                         </a>
                     </li>

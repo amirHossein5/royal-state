@@ -17,55 +17,53 @@
             <div class="row">
 
                 @foreach ($advertises as $advertise)
-                    <div class="col-md-4 ftco-animate">
-                        <div class="properties">
-                            <a href="property-single.html" class="img img-2 d-flex justify-content-center align-items-center"
-                                style="background-image: url(images/properties-1.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="p-3 text">
-                                @if ($advertise->status === 0)
-                                    <span class="status sale">خرید</span>
-                                @else
-                                    <span class="status rent">اجاره</span>
-                                @endif
+                    <div class="col-sm col-md-6 col-lg-4">
+                            <div class="properties">
+                                <a href="{{ route('app.advertises.show', $advertise->id) }}"
+                                    class="img img-2 d-flex justify-content-center align-items-center"
+                                    style="background-image: url({{ asset($advertise->image) }});">
+                                    <div class="icon d-flex justify-content-center align-items-center">
+                                        <span class="icon-search2"></span>
+                                    </div>
+                                </a>
+                                <div class="p-3 text">
+                                    @if ($advertise->sell_status === 'خرید')
+                                        <span class="status sale">خرید</span>
+                                    @else
+                                        <span class="status rent">اجاره</span>
+                                    @endif
+                                    <div class="">
+                                        <div class="">
+                                            <h3>...{{ Str::substr($advertise->address, 0, 20) }}</h3>
+                                            <p>{{ $advertise->home_type }}</p>
+                                        </div>
 
-                                <div class="d-flex">
-                                    <div class="one">
-                                        <h3>
-                                            <a href="property-single.html">{{ sub_str($advertise->address, 0, 10) }}</a>
-                                        </h3>
-                                        <p>{{ $advertise->home_type }}</p>
                                     </div>
-                                    <div class="two">
-                                        <span class="price">{{ number_format($advertise->amount, 3) }}
-                                            تومان
+
+                                    <hr>
+                                    <p class="bottom-area d-flex">
+                                        <i class="mx-1 flaticon-selection"></i>
+                                        <span style="direction: rtl;" class="">
+                                            {{ $advertise->area }}
                                         </span>
-                                    </div>
+                                    </p>
                                 </div>
-                                <p>{{ $advertise->description }}</p>
-                                <hr>
-                                <p class="bottom-area d-flex">
-                                    <span>
-                                        <i class="flaticon-selection"></i>
-                                        {{ $advertise->area }} متر
-                                    </span>
-                                    <span class="ml-auto">
-                                        <i class="flaticon-bathtub"></i>
-                                        {{ $advertise->toilet }}
-                                    </span>
-                                    <span><i class="flaticon-bed"></i>
-                                        {{ $advertise->room }}
-                                    </span>
-                                </p>
                             </div>
                         </div>
-                    </div>
                 @endforeach
 
             </div>
+            <h5 style="direction: rtl;">
+                @if ($advertises->total() === 0)
+                   متاسفانه آگهی ای
+
+                   @if (request()->has('address'))
+                    با آدرس {{ request()->address }}
+                   @endif
+
+                   پیدا نشد.
+                @endif
+            </h5>
             <div class="mt-5 row">
                 <div class="text-center col">
                     <div class="block-27">

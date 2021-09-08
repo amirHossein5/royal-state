@@ -46,7 +46,7 @@
                                     @foreach ($advertise->galleries as $gallery)
                                         <div class="text-center col-md-3">
                                             <div>
-                                                <img style="width: 100%;" src="{{ asset($gallery->image['350_250']) }}"
+                                                <img style="width: 100%;" src="{{ asset($gallery->image) }}"
                                                     alt="">
                                             </div>
 

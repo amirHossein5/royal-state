@@ -15,7 +15,6 @@ class CategoryController extends Controller
     {
         $categories = Category::query()
             ->withTrashed()
-            ->withParent()
             ->latest()
             ->paginate(5);
 
@@ -26,9 +25,7 @@ class CategoryController extends Controller
     {
         $this->authorize('create', Category::class);
 
-        $categories = (new CategoryService)->getAll();
-
-        return view('dashbord.categories.create', compact('categories'));
+        return view('dashbord.categories.create');
     }
 
     public function store(CategoryRequest $request): RedirectResponse
@@ -46,13 +43,7 @@ class CategoryController extends Controller
     {
         $this->authorize('update', $category);
 
-        $category->load('parent');
-
-        $categories = (new CategoryService)
-            ->getAll()
-            ->where('id','!=',$category->id);
-
-        return view('dashbord.categories.edit', compact('category', 'categories'));
+        return view('dashbord.categories.edit', compact('category'));
     }
 
     public function update(CategoryRequest $request, Category $category): RedirectResponse
@@ -70,7 +61,7 @@ class CategoryController extends Controller
     {
         $this->authorize('delete', $category);
 
-        (new CategoryService)->destroy($category);
+        $category->delete();
 
         return back()
             ->with('success', 'با موفقیت پاک شد.');

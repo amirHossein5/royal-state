@@ -35,6 +35,7 @@ Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
         //edit profile informaiton
         Route::name('profile.')->prefix('profile/')->group(function () {
             Route::get('/edit/{user:first_name}', [ProfileController::class, 'edit'])->name('edit');
+            Route::post('/{user:id}/reset-password',[ProfileController::class,'resetPassword'])->name('resetPassword');
             Route::put('/', [ProfileController::class, 'update'])->name('update');
             Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
         });
@@ -169,6 +170,7 @@ Route::name('app.')->group(function () {
     Route::get('/posts', [AppPostController::class, 'index'])->name('posts');
     Route::get('/posts/{post:slug}', [AppPostController::class, 'show'])->name('posts.show');
     Route::post('/posts/{post:slug}/comments', [AppCommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}',[AppCommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 

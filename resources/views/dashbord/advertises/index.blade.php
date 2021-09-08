@@ -43,8 +43,9 @@
                                                     <td>{{ $advertise->title }}</td>
                                                     <td>{{ $advertise->category_name }}</td>
                                                     <td>{{ $advertise->address }}</td>
+
                                                     <td><img style="width: 90px;"
-                                                            src="{{ asset($advertise->image['350_250']) }}" alt="">
+                                                        src="{{ asset($advertise->image) }}" alt="">
 
                                                     </td>
                                                     <td>

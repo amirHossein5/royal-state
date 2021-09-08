@@ -38,7 +38,7 @@
                                                     <td>{{ Str::substr($post->title, 0, 10) }}...</td>
                                                     <td>{{ $post->category_name }}</td>
                                                     <td>{{ $post->author->full_name }}</td>
-                                                    <td><img style="width: 90px;" src="{{ asset($post->image['79_80']) }}"
+                                                    <td><img style="width: 90px;" src="{{ asset($post->image) }}"
                                                             alt="">
                                                     </td>
                                                     <td style="min-width: 16rem; text-align: left;">

@@ -27,8 +27,7 @@ class AddSocialLoginFieldToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('social_id');
-            $table->dropColumn('social_type');
+            $table->dropColumn('social_id', 'social_type');
         });
     }
 }

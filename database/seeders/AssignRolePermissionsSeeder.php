@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 
@@ -14,8 +15,10 @@ class AssignRolePermissionsSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(PermissionSeeder::class);
-        $this->call(RoleSeeder::class);
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class
+        ]);
 
         $userRole = Role::findByname('user');
         $userRole->permissions()->attach([20, 21, 23, 24, 25, 26, 27]);

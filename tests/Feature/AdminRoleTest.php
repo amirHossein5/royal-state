@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use App\Traits\AuthorizableTest;
 use Database\Seeders\AssignRolePermissionsSeeder;
@@ -13,7 +15,7 @@ class AdminRoleTest extends TestCase
 {
     use RefreshDatabase, AuthorizableTest;
 
-    protected $seeder = AssignRolePermissionsSeeder::class;
+    protected $seed = true;
 
     /**
      * test_admin_can_see_every_page

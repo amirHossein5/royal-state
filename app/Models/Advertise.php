@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Advertise extends Model
 {
@@ -43,7 +44,7 @@ class Advertise extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'cat_id');
+        return $this->belongTo(Category::class,'cat_id','id');
     }
 
     public function owner(): BelongsTo
@@ -65,6 +66,13 @@ class Advertise extends Model
      * Scopes
      *
      */
+    public function scopeWhereCategory($query, string $name): Builder
+    {
+        $categoryId = Category::where('name',$name)->first('id')->id;
+
+        return $query->where('cat_id',$categoryId);
+    }
+
     public function scopeWithOwner($query): Builder
     {
         return $query->with('owner:first_name,last_name,id');
@@ -105,13 +113,18 @@ class Advertise extends Model
 
     public function getSellStatusAttribute(): string
     {
-        return $this->sell_status === 0
+        return $this->attributes['sell_status'] === 0
             ? 'خرید'
             : 'اجاره';
     }
 
-    public function getHomeType(): string
+    public function getHomeTypeAttribute(): string
     {
-        // return match($this->type);
+        return match ($this->type) {
+            0 => 'آپارتمان',
+            1 => 'ویلایی',
+            2 => 'زمین',
+            3 => 'سوله'
+        };
     }
 }

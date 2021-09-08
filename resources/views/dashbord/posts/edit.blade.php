@@ -51,7 +51,7 @@
                                         <label for="image">تصویر</label>
                                         <input name="image" type="file" id="image"
                                             class="form-control-file {{ errorClass($errors, 'image') }}">
-                                        <img src="{{ asset($post->image['225_250']) }}" alt="" width="200" height="150"
+                                        <img src="{{ asset($post->image) }}" alt="" width="200" height="150"
                                             class="mt-4">
                                         @error('image')
                                             <p class="text-danger">{{ $message }}</p>
@@ -93,7 +93,7 @@
 
                                 <div class="col-md-6">
                                     <section class="form-group">
-                                        <button type="submit" class="btn btn-primary">ایجاد</button>
+                                        <button type="submit" class="btn btn-primary">ویرایش</button>
                                     </section>
                                 </div>
                             </form>
@@ -110,6 +110,7 @@
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
     <script type="text/javascript">
-        CKEDITOR.replace('description')
+        CKEDITOR.replace('body')
     </script>
 @endsection
+

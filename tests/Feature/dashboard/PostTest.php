@@ -16,7 +16,7 @@ class PostTest extends TestCase
 {
     use RefreshDatabase, AuthorizableTest, WithFaker;
 
-    protected $seeder = AssignRolePermissionsSeeder::class;
+    protected $seed = true;
 
     /**
      * test_user_with_post_access_all_can_access_everywhere
@@ -107,7 +107,7 @@ class PostTest extends TestCase
 
         $this->get(route('dashboard.posts.index'))
             ->assertStatus(200)
-            ->assertDontSee('ویرایش')
+            ->assertSee('ویرایش')
             ->assertSee('حذف')
             ->assertSee('ایجاد');
 

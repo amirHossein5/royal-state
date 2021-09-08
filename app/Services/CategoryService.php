@@ -2,30 +2,31 @@
 
 namespace App\Services;
 
-use App\Models\Category;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
-    public function getAll(): Collection|Builder
+    public function getRelatedNameByTable(string $table): Collection
     {
-        return Cache::rememberForever('allCategories', function () {
-            return DB::table('categories')
-                ->whereNull(['deleted_at'])
-                ->get(['name', 'id']);
-        });
+        return DB::table($table)->select('categories.name')
+            ->join('categories', "{$table}.cat_id", 'categories.id')
+            ->pluck('name');
     }
 
-    public function destroy(Category $category): Void
+    public function countNames(Collection $names): array
     {
-        DB::transaction(function () use ($category) {
-            $category->delete();
+        $categoriesWithCount = [];
 
-            Category::where('parent_id', $category->id)
-                ->update(['parent_id' => null]);
-        });
+        foreach ($names as $name) {
+            if (isset($categoriesWithCount[$name])) {
+                $categoriesWithCount[$name]++;
+                continue;
+            }
+
+            $categoriesWithCount[$name] = 1;
+        }
+
+        return $categoriesWithCount;
     }
 }

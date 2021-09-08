@@ -9,6 +9,7 @@ use App\Http\Requests\AdvertiseRequest;
 use App\Services\CategoryService;
 use App\Services\ImageService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AdvertiseController extends Controller
@@ -28,7 +29,7 @@ class AdvertiseController extends Controller
     {
         $this->authorize('create', Advertise::class);
 
-        $categories = (new CategoryService)->getAll();
+        $categories = DB::table('categories')->get(['name', 'id']);
 
         return view('dashbord.advertises.create', compact('categories'));
     }
@@ -48,7 +49,7 @@ class AdvertiseController extends Controller
     {
         $this->authorize('update', $advertise);
 
-        $categories = (new CategoryService)->getAll();
+        $categories = DB::table('categories')->get(['name', 'id']);
 
         return view('dashbord.advertises.edit', compact('categories', 'advertise'));
     }

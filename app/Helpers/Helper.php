@@ -101,3 +101,10 @@ function hasPermission(Collection $permissions, string $expectedPermission): str
 
     return '';
 }
+
+function numberformat(float $number, int $decimal = 3): string
+{
+    $number_format = number_format($number, $decimal);
+
+    return  substr($number_format, 0, strpos($number_format, '.'));
+}

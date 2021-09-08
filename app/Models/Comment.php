@@ -41,7 +41,10 @@ class Comment extends Model
 
     public function children(): HasMany
     {
-        return $this->hasMany(Comment::class, 'parent_id', 'id')->with('children');
+        return $this->hasMany(Comment::class, 'parent_id', 'id')
+            ->latest()
+            ->with('user:id,first_name,last_name')
+            ->with('children');
     }
 
     public function post(): BelongsTo

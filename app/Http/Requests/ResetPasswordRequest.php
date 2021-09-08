@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\checkUserPasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class CategoryRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        $except = strtolower(request()->method()) === "put" ? "," . request()->category->id : '';
         return [
-            'name' => "required|unique:categories,name{$except}|string",
+            'current_password' => ['required',new checkUserPasswordRule],
+            'password'=> 'confirmed|required|min:8'
         ];
     }
 }

@@ -303,7 +303,9 @@
             })
 
             $('#remove_social_media').click(function() {
-                $($('#social_medias').children()[-1]).remove();
+                var children = $('#social_medias').children();
+
+                $(children[children.length -1]).remove();
             })
         })
     </script>

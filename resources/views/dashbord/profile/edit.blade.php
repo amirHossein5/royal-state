@@ -69,10 +69,6 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="mb-2 col-md-12">
-                                    <a href="{{ url('/') }}" class="btn btn-primary">تغییر رمز عبور</a>
-                                </div>
-
                                 <div class="col-md-12">
                                     <fieldset class="form-group">
                                         <button type="submit" class="btn btn-primary">
@@ -91,6 +87,42 @@
                                         حذف حساب کاربری
                                     </button>
                                 </form>
+                            </div>
+                            <div class="pt-2 mt-2 mb-3 border-top col-md-12">
+                                <div class="col-md-6">
+                                    <form action="{{ route('dashboard.profile.resetPassword', $user->id) }}"
+                                        method="POST">
+                                        @csrf
+
+                                        <div class="mb-2 form-group">
+                                            <input type="password" name="current_password" placeholder="رمز عبور فغلی"
+                                                id="current_password" class="form-control">
+                                            @error('current_password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-2 form-group">
+                                            <input type="password" name="password" placeholder="رمز" id="password"
+                                                class="form-control">
+                                            @error('password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-2 form-group">
+                                            <input type="password" name="password_confirmation" placeholder="تکرار رمز"
+                                                id="password_confirmation" class="form-control">
+                                            @error('password_confirmation')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mx-auto d-grid">
+                                            <button type="submit" class="btn btn-primary btn-block">تغییر رمز </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

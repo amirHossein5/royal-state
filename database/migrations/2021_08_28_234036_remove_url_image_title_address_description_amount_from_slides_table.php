@@ -14,12 +14,14 @@ class RemoveUrlImageTitleAddressDescriptionAmountFromSlidesTable extends Migrati
     public function up()
     {
         Schema::table('slides', function (Blueprint $table) {
-            $table->dropColumn('url');
-            $table->dropColumn('image');
-            $table->dropColumn('title');
-            $table->dropColumn('address');
-            $table->dropColumn('description');
-            $table->dropColumn('amount');
+            $table->dropColumn(
+                'url',
+                'image',
+                'amount',
+                'description',
+                'address',
+                'title'
+            );
         });
     }
 

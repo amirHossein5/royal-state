@@ -33,6 +33,7 @@ class CommentStoreRequest extends FormRequest
         }
 
         $rules ['comment'] = 'required|string';
+        $rules['replyTo'] = 'sometimes|exists:comments,id';
 
         return $rules;
     }

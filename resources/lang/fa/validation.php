@@ -187,6 +187,8 @@ return [
         'persian_name'=>'نام فارسی',
         'site_name'=>'نام سایت',
         'short_description'=>'توضیحات کوتاه',
-        'long_description' => 'توضیحات کامل'
+        'long_description' => 'توضیحات کامل',
+        "current_password" => 'رمز عبور فعلی',
+        "images"=>'عکس'
     ],
 ];

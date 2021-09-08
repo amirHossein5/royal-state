@@ -9,6 +9,10 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $seed = true;
+
     public function test_index_page_renders()
     {
         $user = User::factory()->create();

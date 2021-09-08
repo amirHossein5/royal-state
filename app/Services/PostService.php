@@ -33,11 +33,10 @@ class PostService
         $post->forceDelete();
     }
 
-    private function saveImage(object $image): array
+    private function saveImage(object $image): string
     {
         return ImageService::make($image)
             ->folder('posts')
-            ->sizes(['79_80', '225_250', '730_547'])
             ->save();
     }
 }

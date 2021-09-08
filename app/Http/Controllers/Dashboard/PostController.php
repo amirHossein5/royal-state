@@ -8,6 +8,7 @@ use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
 use App\Services\CategoryService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -26,7 +27,7 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        $categories = (new CategoryService)->getAll();
+        $categories = DB::table('categories')->get(['name', 'id']);
 
         return view('dashbord.posts.create', compact('categories'));
     }
@@ -46,7 +47,7 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $categories = (new CategoryService)->getAll();
+        $categories = DB::table('categories')->get(['name', 'id']);
 
         $post = (object) $post->toArray();
 

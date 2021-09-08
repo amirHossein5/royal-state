@@ -25,7 +25,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>نام</th>
-                                            <th>دسته والد</th>
                                             <th style="min-width: 6rem; text-align: left;">تنظیمات</th>
                                         </tr>
                                     </thead>
@@ -34,7 +33,6 @@
                                             <tr role="row" class="odd" id="categoryItem">
                                                 <td class="sorting_1" id="id">{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name }}</td>
-                                                <td>{{ $category->parent_name ?? 'دسته اصلی' }}</td>
                                                 <td style="min-width: 6rem; text-align: left;">
 
                                                     @if (!$category->deleted_at)

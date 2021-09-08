@@ -16,9 +16,8 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        $sliders = DB::table('slides')->select('advertises.*')
-            ->join('advertises', 'advertises.id', 'slides.advertise_id')
-            ->orderByDesc('slides.created_at')
+        $sliders = Slide::with('advertise')
+            ->latest()
             ->get();
 
         $latestAdvertises = Advertise::latest()->take(10)->get();
@@ -31,15 +30,17 @@ class HomeController extends Controller
         $interstingFacts['sellers'] = User::whereHas('advertises')->count();
 
         $latestBlogs = Post::withCount('comments')
-            ->with('author:id,name')
-            ->where('published_at', '>=', now())
+            ->with('author:id,first_name')
+            ->where('published_at', '<=', now())
             ->latest()
             ->take(10)
             ->get();
 
-        // $latestBlogs->each(function($item){
-        //     $item->created_at
-        // });
+        // dd(
+        //     $latestBlogs->each(function ($item) {
+        //         return $item;
+        //     })
+        // );
 
         return view(
             'app.index',
@@ -57,6 +58,6 @@ class HomeController extends Controller
     {
         $setting = Setting::first('long_description');
 
-        return view('app.about',compact('setting'));
+        return view('app.about', compact('setting'));
     }
 }

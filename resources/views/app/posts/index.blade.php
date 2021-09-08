@@ -7,42 +7,29 @@
 @section('content')
 
     @include('app.layouts.partials.hero-wrap', [
-        'this_page'=>'بلاگ ها',
-        'pages' => ['بلاگ ها']
+    'this_page'=>'بلاگ ها',
+    'pages' => ['بلاگ ها']
     ])
 
     <section class="ftco-section bg-light">
         <div class="container">
-            <div class="row d-flex">
+            <div class="row d-flex justify-content-center">
 
                 @foreach ($posts as $post)
-                    <div class="col-md-3 d-flex ftco-animate">
-                        <div class="blog-entry align-self-stretch">
-                            <a href="blog-single.html" class="block-20"
+                    <div class="d-flex ftco-animate col-md-3 col-sm col-lg-4">
+                        <div class="blog-entry align-self-stretch w-100">
+                            <a href="{{ route('app.posts.show', $post->slug) }}" class="block-20"
                                 style="background-image: url({{ $post->image }});">
                             </a>
                             <div class="mt-3 text d-block">
-                                <h3 class="mt-3 heading">
-                                    <a href="{{ route('app.posts.show', $post->slug) }}">
-                                        {{ $post->title }}
-                                    </a>
+                                <h3 class="mt-3 heading" style="min-height: 4rem">
+                                    <a href="{{ route('app.posts.show', $post->slug) }}"
+                                        style="font-family: Vazir !important">{{ $post->title }}</a>
                                 </h3>
                                 <div class="mb-3 meta">
-                                    <div>
-                                        <a href="{{ route('app.posts.show', $post->slug) }}">
-                                            {{ $post->created_at }}
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="{{ route('app.posts.show', $post->slug) }}">
-                                            {{ $post->author->first_name }}
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="{{ route('app.posts.show', $post->slug) }}" class="meta-chat">
-                                            <span class="icon-chat"> </span>
-                                            {{ $post->comments_count }}
-                                        </a>
+                                    <div>{{ jDate()->forge($post->created_at)->format('%A, %d %B %Y') }}</div>
+                                    <div>{{ $post->author->first_name }}</div>
+                                    <div><span class="icon-chat"></span> {{ $post->comments_count }}
                                     </div>
                                 </div>
                             </div>
@@ -50,14 +37,10 @@
                     </div>
                 @endforeach
 
-                <div class="mt-5 row">
-                    <div class="text-center col">
-                        <div class="block-27">
-                            {{ $posts->links() }}
-                        </div>
-                    </div>
-                </div>
             </div>
+            <section class="d-flex justify-content-center">
+                {{ $posts->links() }}
+            </section>
     </section>
 
 @endsection
