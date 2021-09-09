@@ -69,6 +69,34 @@
                                     </fieldset>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <fieldset class="form-group">
+                                        <input name="show_phone_number" type="hidden" value="0">
+                                        <label>
+                                            <input {{ oldOrValueChecked('show_phone_number', $user->show_phone_number) }}
+                                                name="show_phone_number" value="1" type="checkbox" id="helperText"
+                                                class="{{ errorClass($errors, 'show_phone_number') }}" />
+                                            نمایش شماره تلفن در آگهی ها
+                                        </label>
+                                        @error('show_phone_number')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                        <input name="show_email" type="hidden" value="0">
+                                        <label>
+                                            <input {{ oldOrValueChecked('show_email', $user->show_email) }}
+                                                name="show_email" type="checkbox" value="1" id="show_email"
+                                                class="{{ errorClass($errors, 'show_email') }}" />
+                                            نمایش ایمیل در آگهی ها
+                                        </label>
+                                        @error('show_email')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </fieldset>
+                                </div>
+
                                 <div class="col-md-12">
                                     <fieldset class="form-group">
                                         <button type="submit" class="btn btn-primary">
@@ -77,17 +105,7 @@
                                     </fieldset>
                                 </div>
                             </form>
-                            <div>
-                                <form class="d-inline"
-                                    action="{{ route('dashboard.profile.destroy', ['email' => $user->email]) }}"
-                                    method="post" onclick="return window.confirm('مطمین هستید؟')">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger">
-                                        حذف حساب کاربری
-                                    </button>
-                                </form>
-                            </div>
+
                             <div class="pt-2 mt-2 mb-3 border-top col-md-12">
                                 <div class="col-md-6">
                                     <form action="{{ route('dashboard.profile.resetPassword', $user->id) }}"
@@ -123,6 +141,18 @@
                                         </div>
                                     </form>
                                 </div>
+                            </div>
+
+                            <div class="pt-2 border-top">
+                                <form class="d-inline"
+                                    action="{{ route('dashboard.profile.destroy', ['email' => $user->email]) }}"
+                                    method="post" onclick="return window.confirm('مطمین هستید؟')">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-danger">
+                                        حذف حساب کاربری
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

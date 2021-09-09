@@ -60,6 +60,20 @@
                             </div>
                         </div>
 
+                        <div class="mt-2 col-md-12">
+                            <div>
+                                <ul class="d-flex justify-content-between" style="direction: rtl;">
+                                    @if ($advertise->owner->show_phone_number)
+                                        <li>شماره تلفن : {{ $advertise->owner->phone ?? 'صاحب آگهی شماره تلفنی ثبت نکرده است' }}</li>
+                                    @endif
+
+                                    @if ($advertise->owner->show_email)
+                                        <li>ایمیل : {{ $advertise->owner->email }}</li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- .col-md-8 -->
@@ -76,34 +90,34 @@
                 <div class="row">
                     <div class="properties-slider owl-carousel ftco-animate">
                         @foreach ($relatedAdvertises as $advertise)
-                                <div class="properties">
-                                    <a href="{{ route('app.advertises.show', $advertise->id) }}"
-                                        class="img img-2 d-flex justify-content-center align-items-center"
-                                        style="background-image: url({{ asset($advertise->image) }});">
-                                        <div class="icon d-flex justify-content-center align-items-center">
-                                            <span class="icon-search2"></span>
-                                        </div>
-                                    </a>
-                                    <div class="p-3 text">
-                                        @if ($advertise->sell_status === 'خرید')
-                                            <span class="status sale">خرید</span>
-                                        @else
-                                            <span class="status rent">اجاره</span>
-                                        @endif
-                                        <div class="">
+                            <div class="properties">
+                                <a href="{{ route('app.advertises.show', $advertise->id) }}"
+                                    class="img img-2 d-flex justify-content-center align-items-center"
+                                    style="background-image: url({{ asset($advertise->image) }});">
+                                    <div class="icon d-flex justify-content-center align-items-center">
+                                        <span class="icon-search2"></span>
+                                    </div>
+                                </a>
+                                <div class="p-3 text">
+                                    @if ($advertise->sell_status === 'خرید')
+                                        <span class="status sale">خرید</span>
+                                    @else
+                                        <span class="status rent">اجاره</span>
+                                    @endif
+                                    <div class="">
                                             <div class="">
-                                                <h3>...{{ Str::substr($advertise->address, 0, 20) }}</h3>
-                                                <p>{{ $advertise->home_type }}</p>
-                                            </div>
+                                                                    <h3>...{{ Str::substr($advertise->address, 0, 20) }}</h3>
+                                                                    <p>{{ $advertise->home_type }}</p>
+                                                                </div>
 
-                                        </div>
+                                                            </div>
 
-                                        <hr>
-                                        <p class="bottom-area d-flex">
-                                            <i class="mx-1 flaticon-selection"></i>
-                                            <span style="direction: rtl;" class="">
-                                                {{ $advertise->area }}
-                                            </span>
+                                                            <hr>
+                                                            <p class=" bottom-area d-flex">
+                                        <i class="mx-1 flaticon-selection"></i>
+                                        <span style="direction: rtl;" class="">
+                                            {{ $advertise->area }}
+                                        </span>
                                         </p>
                                     </div>
                                 </div>

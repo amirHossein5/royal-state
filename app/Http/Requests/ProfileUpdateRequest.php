@@ -28,7 +28,9 @@ class ProfileUpdateRequest extends FormRequest
             'email' => "required|email|unique:users,email,{$request->id}",
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'phone' => 'nullable|digits_between:8,13'
+            'phone' => 'nullable|digits_between:8,13',
+            'show_email' => 'required|boolean',
+            'show_phone_number' => 'required|boolean',
         ];
     }
 }

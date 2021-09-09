@@ -25,7 +25,7 @@ class AdvertiseController extends Controller
 
     public function show(Advertise $advertise): View
     {
-        $advertise->load('galleries');
+        $advertise->load('galleries', 'owner');
 
         $latestBlogs = Post::withCount('comments')
             ->with('author:id,first_name')

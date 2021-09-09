@@ -22,6 +22,13 @@ function oldChecked(int|string $old): string
     return old($old) !== null ? 'checked' : ' ';
 }
 
+function oldOrValueChecked(
+    null|int|string $old,
+    null|int|string $value,
+): string {
+    return old($old) ?? $value ? 'checked' : '';
+}
+
 /**
  * if old equals with expected returns selected.
  *
@@ -40,7 +47,7 @@ function oldEqualsSelected(int|string $old, int|string $expected): ?String
 function oldOrValueSelected(
     null|int|string $old,
     null|int|string $value,
-    int|string $expected
+    int|string $expected,
 ): ?String {
     if (old($old)) {
         return old($old) == $expected ? 'selected' : '';
