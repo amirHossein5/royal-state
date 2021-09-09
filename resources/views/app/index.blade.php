@@ -1,7 +1,7 @@
 @extends('app.layouts.master')
 
 @section('head-tag')
-    <title>Royal Estate</title>
+    <title>{{ $site_name }}</title>
 @endsection
 
 @section('content')

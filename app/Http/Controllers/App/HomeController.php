@@ -36,11 +36,7 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        // dd(
-        //     $latestBlogs->each(function ($item) {
-        //         return $item;
-        //     })
-        // );
+        $siteName = Setting::first('site_name')?->site_name;
 
         return view(
             'app.index',
@@ -49,7 +45,8 @@ class HomeController extends Controller
                 'latestAdvertises',
                 'bestAdvertises',
                 'interstingFacts',
-                'latestBlogs'
+                'latestBlogs',
+                'site_name'
             )
         );
     }
