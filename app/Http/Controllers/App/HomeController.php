@@ -36,7 +36,7 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        $siteName = Setting::first('site_name')?->site_name;
+        $site_name = Setting::first('site_name')?->site_name;
 
         return view(
             'app.index',
