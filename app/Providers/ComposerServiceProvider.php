@@ -28,6 +28,11 @@ class ComposerServiceProvider extends ServiceProvider
 
         view()->composer(['app.layouts.partials.nav-bar'], function (View $view) {
             $view->with('menus', Menu::all());
+            $view->with('site_name', Setting::first('site_name')->site_name);
+        });
+
+        view()->composer(['*.head-tag'],function(View $view){
+            $view->with('logo', Setting::first('logo')->logo);
         });
 
         view()->composer(['app.layouts.partials.footer'], function (View $view) {

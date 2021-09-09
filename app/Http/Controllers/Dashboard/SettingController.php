@@ -24,14 +24,7 @@ class SettingController extends Controller
         $request = $request->validated();
 
         if (array_key_exists('logo', $request)) {
-            $files = Storage::allFiles('public/images/settings');
-            Storage::delete($files);
-
-            $request['logo'] = str_replace(
-                'public',
-                'storage',
-                Storage::put('public/images/settings', $request['logo'])
-            );
+            $request['logo'] = $this->processLogo($request);
         }
 
         Setting::createOrUpdate($request);
@@ -39,5 +32,17 @@ class SettingController extends Controller
         return redirect()
             ->route('dashboard.settings.edit')
             ->with('success', 'باموفقیت تغییر کرد');
+    }
+
+    private function processLogo(array $request): string
+    {
+        $files = Storage::allFiles('public/images/settings');
+        Storage::delete($files);
+
+        return str_replace(
+            'public',
+            'storage',
+            Storage::put('public/images/settings', $request['logo'])
+        );
     }
 }
