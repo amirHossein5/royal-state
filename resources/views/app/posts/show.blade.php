@@ -21,42 +21,47 @@
                         <h3 class="mb-5">نظرات</h3>
                         <ul class="comment-list" id="allComments">
 
-                            @foreach ($comments as $comment)
+                            @if ($comments->isNotEmpty())
+                                @foreach ($comments as $comment)
 
-                                <li class="p-2 border rounded border-primary comment" id="comment">
+                                    <li class="p-2 border rounded border-primary comment" id="comment">
 
-                                    <div class="flex-row mb-2 d-flex justify-content-between align-items-baseline">
-                                        <div class="meta">
+                                        <div class="flex-row mb-2 d-flex justify-content-between align-items-baseline">
+                                            <div class="meta">
 
-                                            @if (auth()->user()->id === $comment->user_id)
-                                                <form method="post"
-                                                    action="{{ route('app.comments.destroy', $comment->id) }}"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('delete')
+                                                @if (auth()->user()?->id === $comment->user_id)
+                                                    <form method="post"
+                                                        action="{{ route('app.comments.destroy', $comment->id) }}"
+                                                        class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
 
-                                                    <button type="submit" class="rounded btn btn-danger btn-sm">حذف</button>
-                                                </form>
-                                            @endif
+                                                        <button type="submit"
+                                                            class="rounded btn btn-danger btn-sm">حذف</button>
+                                                    </form>
+                                                @endif
 
-                                            <small>
-                                                {{ jDate()->forge($comment->created_at)->format('%A, %d %B %Y, H:i:s') }}
-                                            </small>
+                                                <small>
+                                                    {{ jDate()->forge($comment->created_at)->format('%A, %d %B %Y, H:i:s') }}
+                                                </small>
 
+                                            </div>
+                                            <h5>{{ $comment->user->full_name }}</h3>
                                         </div>
-                                        <h5>{{ $comment->user->full_name }}</h3>
-                                    </div>
-                                    <div class="comment-body">
-                                        <p style="direction: rtl;">{{ $comment->comment }}</p>
-                                        <p><span class="reply" style="cursor: pointer;"
-                                                onclick="replyTo({{ $comment->id }})">پاسخ</span></p>
-                                    </div>
-                                    @foreach ($comment->children as $comment)
-                                        @include('app.layouts.partials.comments-children',['comment'=>$comment])
-                                    @endforeach
-                                </li>
-                            @endforeach
+                                        <div class="comment-body">
+                                            <p style="direction: rtl;">{{ $comment->comment }}</p>
+                                            <p><span class="reply" style="cursor: pointer;"
+                                                    onclick="replyTo({{ $comment->id }})">پاسخ</span></p>
+                                        </div>
+                                        @foreach ($comment->children as $comment)
+                                            @include('app.layouts.partials.comments-children',['comment'=>$comment])
+                                        @endforeach
+                                    </li>
+                                @endforeach
 
+                            @else
+                                <p style="direction: rtl;">شما اولین نفر باشید!</p>
+                            @endif
 
                         </ul>
 

@@ -3,7 +3,7 @@
         <div class="flex-row mb-2 d-flex justify-content-between align-items-baseline">
             <div class="meta">
 
-                @if (auth()->user()->id === $comment->user_id)
+                @if (auth()->user()?->id === $comment->user_id)
                     <form method="post" action="{{ route('app.comments.destroy', $comment->id) }}" class="d-inline">
                         @csrf
                         @method('delete')
