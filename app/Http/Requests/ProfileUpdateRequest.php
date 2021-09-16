@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -31,6 +32,7 @@ class ProfileUpdateRequest extends FormRequest
             'phone' => 'nullable|digits_between:8,13',
             'show_email' => 'required|boolean',
             'show_phone_number' => 'required|boolean',
+            'delete_account_after' => ['required',Rule::in('1','3','6')]
         ];
     }
 }

@@ -21,7 +21,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = User::where('id', $request->id)->first();
-
+        
         $request = $request->validated();
 
         if ($request['email'] !== $user->email) {

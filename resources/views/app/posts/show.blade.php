@@ -15,7 +15,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 ftco-animate">
-                    {!! $post->body !!}
+                    <section style="overflow: auto;">
+                        {!! $post->body !!}
+                    </section>
 
                     <div class="pt-5 mt-5">
                         <h3 class="mb-5">نظرات</h3>
@@ -67,7 +69,7 @@
 
                         @if ($comments->hasMorePages())
                             <section class="text-center">
-                                <button type="button" class="rounded btn btn-secondary" id="addMore">بیشتر</button>
+                                <button type="button" class="rounded btn btn-black" id="addMore">بیشتر</button>
                             </section>
                         @endif
                         <!-- END comment-list -->

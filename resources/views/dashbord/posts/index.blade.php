@@ -82,7 +82,7 @@
                                 </table>
 
                                 <section class="text-center">
-                                    <button class="btn btn-secondary" id="addMore">بیشتر</button>
+                                    <button class="btn btn-black" id="addMore">بیشتر</button>
                                 </section>
 
                             </div>

@@ -27,7 +27,7 @@ use App\Http\Controllers\RoleController;
 |--------------------------------------------------------------------------
 */
 
-Route::name('dashboard.')->middleware(['auth', 'verified'])->prefix('dashboard')
+Route::name('dashboard.')->middleware(['auth', 'verified','UserIsEnable'])->prefix('dashboard')
     ->namespace('Dashboard')->group(function () {
 
         Route::get('/', [DashboardController::class, 'index'])->name('index');

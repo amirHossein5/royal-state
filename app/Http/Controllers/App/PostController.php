@@ -31,12 +31,12 @@ class PostController extends Controller
     {
         $comments = Comment::where('post_id', $post->id)
             ->whereNull('parent_id')
-            ->where('approved',true)
+            ->where('approved', true)
             ->with('user:id,first_name,last_name', 'children')
             ->latest()
             ->paginate(4);
 
-            $latestAdvertises = Advertise::latest()
+        $latestAdvertises = Advertise::latest()
             ->take(5)
             ->get();
 

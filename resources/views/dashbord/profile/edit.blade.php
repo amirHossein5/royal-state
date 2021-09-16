@@ -97,6 +97,31 @@
                                     </fieldset>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <fieldset class="form-group">
+                                        <label for="helperText">اگر برای این مدت نبودید حساب پاک میشود:</label>
+
+                                        <select name="delete_account_after" class="form-control">
+                                            <option value="1"
+                                                {{ oldOrValueSelected('delete_account_after', $user->delete_account_after, 1) }}>
+                                                1 ماه
+                                            </option>
+                                            <option value="3"
+                                                {{ oldOrValueSelected('delete_account_after', $user->delete_account_after, 3) }}>
+                                                3 ماه
+                                            </option>
+                                            <option value="6"
+                                                {{ oldOrValueSelected('delete_account_after', $user->delete_account_after, 6) }}>
+                                                6 ماه
+                                            </option>
+                                        </select>
+
+                                        @error('delete_account_after')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </fieldset>
+                                </div>
+
                                 <div class="col-md-12">
                                     <fieldset class="form-group">
                                         <button type="submit" class="btn btn-primary">
