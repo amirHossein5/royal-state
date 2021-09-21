@@ -32,16 +32,7 @@ class SettingUpdateRequest extends FormRequest
             'email' => 'nullable|email',
             'phone' => 'nullable|digits_between:8,13',
             'address' => 'nullable|string',
-            'social_medias.*.url' => 'sometimes|url',
-            'social_medias.*.logo' => 'sometimes|string'
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'social_medias.*.url' => __('url'),
-            'social_medias.*.logo' => __('logo')
-        ];
-    }
 }

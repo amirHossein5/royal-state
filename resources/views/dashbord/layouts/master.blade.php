@@ -3,7 +3,7 @@
 
 <head>
     @include('dashbord.layouts.partials.head-tag')
-    
+
     @yield('head-tag')
 </head>
 
@@ -49,6 +49,7 @@
     {{-- END: Sweetalert --}}
 
     @yield('script')
+    @stack('script')
 
 </body>
 

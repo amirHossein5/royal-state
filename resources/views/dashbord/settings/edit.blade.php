@@ -2,6 +2,8 @@
 
 @section('head-tag')
     <title>تنظیمات | داشبورد</title>
+
+    @livewireStyles()
 @endsection
 
 @section('content')
@@ -93,8 +95,8 @@
                                         <label for="short_description">توضیحات کوتاه</label>
                                         <textarea name="short_description" type="text" id="short_description"
                                             placeholder="توضیحات کوتاه ...">
-                                            {{ oldOrValue('short_description', $setting->short_description ?? '') }}
-                                            </textarea>
+                                                                    {{ oldOrValue('short_description', $setting->short_description ?? '') }}
+                                                                    </textarea>
                                     </fieldset>
                                     @error('short_description')
                                         <span class="text-danger">{{ $message }}</span>
@@ -107,127 +109,12 @@
                                         <label for="long_description">توضیحات کامل</label>
                                         <textarea name="long_description" type="text" id="long_description"
                                             class="form-control" placeholder="توضیحات کامل ...">
-                                            {{ oldOrValue('long_description', $setting->long_description ?? '') }}
-                                        </textarea>
+                                                                    {{ oldOrValue('long_description', $setting->long_description ?? '') }}
+                                                                </textarea>
                                     </fieldset>
                                     @error('long_description')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-
-
-                                <div class="col-md-12">
-                                    <fieldset class="form-group">
-                                        <label for="social_media">صفحات اجتماعی</label>
-
-                                        <section id="social_medias">
-
-                                            @if (old('social_medias'))
-
-                                                @foreach (old('social_medias') as $social_media)
-                                                    <section class="mt-2 row social_media_item">
-
-                                                        <section class="col-md-6">
-                                                            <label for="">
-                                                                آدرس
-                                                            </label>
-
-                                                            <input type="text" class="form-control"
-                                                                value="{{ oldOrValue("social_medias[{ $loop->index }][url]", $social_media['url']) }}"
-                                                                name="social_medias[{{ $loop->index }}][url]">
-                                                            @error("social_medias.$loop->index.url")
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </section>
-
-                                                        <section class="col-md-6">
-                                                            <label for="">
-                                                                لوگو
-                                                            </label>
-
-                                                            <select name="social_medias[{{ $loop->index }}][logo]" id=""
-                                                                class="form-control">
-                                                                <option value="icon-twitter"
-                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-twitter') }}>
-                                                                    twitter
-                                                                </option>
-                                                                <option value="icon-facebook"
-                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-facebook') }}>
-                                                                    facebook
-                                                                </option>
-                                                                <option value="icon-instagram"
-                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-instagram') }}>
-                                                                    instagram
-                                                                </option>
-                                                            </select>
-
-                                                            @error("social_medias.$loop->index.logo")
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </section>
-                                                    </section>
-
-                                                @endforeach
-
-                                            @elseif ($setting->social_medias ?? '')
-
-                                                @foreach ($setting->social_medias as $social_media)
-
-                                                    <section class="mt-2 row social_media_item">
-
-                                                        <section class="col-md-6">
-                                                            <label for="">
-                                                                آدرس
-                                                            </label>
-
-                                                            <input type="text" class="form-control"
-                                                                value="{{ oldOrValue("social_medias[{ $loop->index }][url]", $social_media['url']) }}"
-                                                                name="social_medias[{{ $loop->index }}][url]">
-
-                                                            @error("social_medias.$loop->index.url")
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </section>
-
-                                                        <section class="col-md-6">
-                                                            <label for="">
-                                                                لوگو
-                                                            </label>
-
-                                                            <select name="social_medias[{{ $loop->index }}][logo]"
-                                                                class="form-control">
-                                                                <option value="icon-twitter"
-                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-twitter') }}>
-                                                                    twitter
-                                                                </option>
-                                                                <option value="icon-facebook"
-                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-facebook') }}>
-                                                                    facebook
-                                                                </option>
-                                                                <option value="icon-instagram"
-                                                                    {{ oldOrValueSelected("social_medias[{ $loop->index }][logo]", $social_media['logo'], 'icon-instagram') }}>
-                                                                    instagram
-                                                                </option>
-                                                            </select>
-
-                                                            @error("social_medias.$loop->index.logo")
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </section>
-                                                    </section>
-                                                @endforeach
-
-                                            @endif
-
-                                        </section>
-
-                                        <button class="mt-3 btn btn-primary btn-block" type="button"
-                                            id="add_social_media">اضافه کردن</button>
-
-                                        <button class="mt-1 btn btn-danger btn-block " type="button"
-                                            id="remove_social_media">حذف کردن</button>
-
-                                    </fieldset>
                                 </div>
 
                                 <div class="col-md-12">
@@ -236,6 +123,15 @@
                                     </section>
                                 </div>
                             </form>
+                            <div class="mt-3 col-md-12">
+                                <h3>
+                                    شبکه های اجتماعی
+                                </h5>
+                                <br>
+                                @livewire('dashboard.setting.increament-social-medias',
+                                ['social_medias' => $setting->social_medias]
+                                )
+                            </div>
                         </div>
                     </div>
 
@@ -247,67 +143,13 @@
 @endsection
 
 @section('script')
+    @livewireScripts()
+
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
     <script type="text/javascript">
         CKEDITOR.replace('long_description')
         CKEDITOR.replace('short_description')
-
-        $(document).ready(function() {
-
-            var index = $('.social_media_item').length;
-
-            $('#add_social_media').click(function() {
-
-                $('#social_medias').append(`
-                    <section class="mt-2 row social_media_item" >
-
-                        <section class="col-md-6">
-                            <label for="">
-                                آدرس
-                            </label>
-
-                            <input type="text" class="form-control"
-                                value="{{ old('social_medias[`+index+`][url]') }}"
-                                name="social_medias[` + index + `][url]"
-                            >
-                        </section>
-
-                        <section class="col-md-6">
-                            <label for="">
-                                لوگو
-                            </label>
-
-                            <select name="social_medias[` + index + `][logo]" id="" class="form-control">
-                                <option value="icon-twitter"
-                                    {{ oldEqualsSelected('social_medias[`+index+`][logo]', 'icon-twitter') }}
-                                    >
-                                        twitter
-                                </option>
-                                <option value="icon-facebook"
-                                    {{ oldEqualsSelected('social_medias[`+index+`][logo]', 'icon-facebook') }}
-                                >
-                                    facebook
-                                </option>
-                                <option value="icon-instagram"
-                                    {{ oldEqualsSelected('social_medias[`+index+`][logo]', 'icon-instagram') }}
-                                >
-                                    instagram
-                                </option>
-                            </select>
-                        </section>
-                    </section>
-                `);
-
-                index++
-            })
-
-            $('#remove_social_media').click(function() {
-                var children = $('#social_medias').children();
-
-                $(children[children.length -1]).remove();
-            })
-        })
     </script>
 
 @endsection
