@@ -1,16 +1,17 @@
 <ul class="children">
-    <li class="comment">
+    <li class=" comment">
         <div class="flex-row mb-2 d-flex justify-content-between align-items-baseline">
             <div class="meta">
 
-                @if (auth()->user()?->id === $comment->user_id)
-                    <form method="post" action="{{ route('app.comments.destroy', $comment->id) }}" class="d-inline">
-                        @csrf
-                        @method('delete')
 
-                        <button type="submit" class="rounded btn btn-danger btn-sm">حذف</button>
-                    </form>
-                @endif
+                <div class="text-left">
+                    @if (auth()->user()?->id === $comment->user_id)
+                        <form wire:submit.prevent="destroy({{ $comment->id }})" class="d-inline">
+                            <button type="submit" class="rounded btn btn-danger btn-sm">حذف</button>
+                        </form>
+                    @endif
+                </div>
+
 
                 <small>
                     {{ jDate()->forge($comment->created_at)->format('%A, %d %B %Y, H:i:s') }}
@@ -21,8 +22,12 @@
         </div>
         <div class="comment-body">
             <p>{{ $comment->comment }}</p>
-            <p><span class="reply" style="cursor: pointer;" onclick="replyTo({{ $comment->id }})">پاسخ</span>
+
+            <p>
+                <span class="reply" style="cursor: pointer;" wire:click="setReplyTo({{ $comment->id }})">پاسخ
+                </span>
             </p>
+
         </div>
         @foreach ($comment->children as $comment)
             @include('app.layouts.partials.comments-children',['comment'=>$comment])

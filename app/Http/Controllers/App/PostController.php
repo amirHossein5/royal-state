@@ -29,17 +29,10 @@ class PostController extends Controller
 
     public function show(Post $post): View
     {
-        $comments = Comment::where('post_id', $post->id)
-            ->whereNull('parent_id')
-            ->where('approved', true)
-            ->with('user:id,first_name,last_name', 'children')
-            ->latest()
-            ->paginate(4);
-
         $latestAdvertises = Advertise::latest()
             ->take(5)
             ->get();
 
-        return view('app.posts.show', compact('post', 'latestAdvertises', 'comments'));
+        return view('app.posts.show', compact('post', 'latestAdvertises'));
     }
 }

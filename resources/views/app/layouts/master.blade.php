@@ -19,6 +19,7 @@
     @include('app.layouts.partials.scripts')
 
     @yield('scripts')
+    @stack('scripts')
 
 </body>
 
