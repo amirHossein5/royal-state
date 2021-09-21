@@ -73,7 +73,7 @@ class Comment extends Model
     public function getApprovedButtonAttribute(): string
     {
         return $this->approved
-            ? '<button type="submit" class="btn btn-danger waves-effect waves-light">لغو تایید</button>'
-            : '<button type="submit" class="btn btn-success waves-effect waves-light">تایید</button>';
+            ? '<button type="submit" wire:loading.remove class="btn btn-danger waves-effect waves-light">لغو تایید</button>'
+            : '<button type="submit" wire:loading.remove class="btn btn-success waves-effect waves-light">تایید</button>';
     }
 }

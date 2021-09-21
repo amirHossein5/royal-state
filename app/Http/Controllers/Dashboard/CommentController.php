@@ -42,14 +42,4 @@ class CommentController extends Controller
 
         return redirect()->route('dashboard.comments.index');
     }
-
-    public function approved(Comment $comment): RedirectResponse
-    {
-        $this->authorize('approved', Comment::class);
-
-        $comment->approved = !$comment->approved;
-        $comment->save();
-
-        return back()->with('success', 'با موفقیت تغییر یافت');
-    }
 }

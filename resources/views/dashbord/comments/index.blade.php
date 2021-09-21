@@ -2,6 +2,8 @@
 
 @section('head-tag')
     <title> داشبورد | نظرات</title>
+
+    @livewireStyles()
 @endsection
 
 @section('content')
@@ -18,47 +20,46 @@
 
                             <div class="">
                                 <table class="table zero-configuration">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>کاربر</th>
-                                            <th>نظر</th>
-                                            <th>وضعیت</th>
-                                            <th>تنظیمات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>کاربر</th>
+                                        <th>نظر</th>
+                                        <th>وضعیت</th>
+                                        <th>تنظیمات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                        @foreach ($comments as $comment)
+                                    @foreach ($comments as $comment)
 
-                                            @can('view', $comment)
-                                                <tr role="row" class="odd">
-                                                    <td class="sorting_1">{{ $loop->iteration }}</td>
-                                                    <td>{{ $comment->user->full_name }}</td>
-                                                    <td>{{ Str::substr($comment->comment, 0, 10) }}</td>
-                                                    <td>
-                                                        {!! $comment->approvedStatus !!}
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('dashboard.comments.show', $comment->id) }}"
-                                                            class="btn btn-success waves-effect waves-light">نمایش</a>
+                                        @can('view', $comment)
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1">{{ $loop->iteration }}</td>
+                                                <td>{{ $comment->user->full_name }}</td>
+                                                <td>{{ Str::substr($comment->comment, 0, 10) }}</td>
+                                                <td>
+                                                    @livewire('dashboard.comment.approved-status',[
+                                                    'status'=> $comment->approved , 'commentId' => $comment->id
+                                                    ],key($loop->index))
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('dashboard.comments.show', $comment->id) }}"
+                                                        class="btn btn-success waves-effect waves-light">نمایش</a>
 
-                                                        @can('approved', 'App\\Models\Comment')
-                                                            <form class="d-inline"
-                                                                action="{{ route('dashboard.comments.approved', $comment->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                {!! $comment->approved_button !!}
-                                                            </form>
-                                                        @endcan
+                                                    @can('approved', 'App\\Models\Comment')
+                                                        @livewire('dashboard.comment.change-status',[
+                                                        'comment' => $comment
+                                                        ])
+                                                    @endcan
 
-                                                    </td>
-                                                </tr>
-                                            @endcan
+                                                </td>
+                                            </tr>
+                                        @endcan
 
-                                        @endforeach
+                                    @endforeach
 
-                                    </tbody>
+                                </tbody>
                                 </table>
 
                                 <section class="d-flex justify-content-center">
@@ -71,4 +72,10 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+
+    @livewireScripts()
+
 @endsection
