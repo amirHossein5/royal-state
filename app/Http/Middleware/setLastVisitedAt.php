@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class setLastVisitedAt
 {
@@ -16,12 +17,16 @@ class setLastVisitedAt
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = $request->user();
+        if (!Cache::has('lastVisitedAt')) {
+            $user = $request->user();
 
-        if ($user) {
-            $user->last_visited_at = now();
+            if ($user) {
+                $user->last_visited_at = now();
 
-            $user->save();
+                $user->save();
+            }
+
+            Cache::put('lastVisitedAt', now(), 60*5);
         }
 
         return $next($request);
