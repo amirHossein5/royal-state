@@ -477,7 +477,7 @@
                                                 <input type="checkbox" id="menu_delete" value="menu_delete"
                                                     name="permissions[menu_delete]"
                                                     {{ hasPermission($permissions, 'menu_delete') }}>
-                                                <label for="menu_create">
+                                                <label for="menu_delete">
                                                     <h5>حذف منو</h5>
                                                 </label>
                                             </div>

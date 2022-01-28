@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 09, 2021 at 09:41 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.9
+-- Generation Time: Jan 28, 2022 at 08:12 PM
+-- Server version: 10.5.13-MariaDB-0ubuntu0.21.10.1
+-- PHP Version: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -280,7 +280,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (33, '2021_09_04_120449_change_type_long_description_to_text_settings_table', 1),
 (34, '2021_09_05_124825_add_phone_to_users_table', 1),
 (38, '2021_09_06_124413_drop_parent_id_categories_table', 2),
-(56, '2021_09_09_110719_add_show_phone_and_show_email_to_users_table', 3);
+(56, '2021_09_09_110719_add_show_phone_and_show_email_to_users_table', 3),
+(57, '2021_09_16_230058_add_last_visited_at_to_users_table', 4),
+(58, '2021_09_16_231459_rename_column_last_visited_at_users_table', 4),
+(59, '2021_09_16_232545_add_delete_account_after_field_to_users_table', 4),
+(60, '2021_09_16_235344_make_show_phone_number_show_email_nullable_users_table', 4);
 
 -- --------------------------------------------------------
 
@@ -553,22 +557,24 @@ CREATE TABLE `users` (
   `role_id` bigint(20) UNSIGNED NOT NULL,
   `social_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `social_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `show_phone_number` tinyint(1) NOT NULL,
-  `show_email` tinyint(1) NOT NULL,
+  `show_phone_number` tinyint(1) DEFAULT NULL,
+  `show_email` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `last_visited_at` datetime NOT NULL DEFAULT '2022-01-28 23:37:22',
+  `delete_account_after` enum('1','3','6') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '6'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `email_verified_at`, `password`, `two_factor_code`, `two_factor_code_expire`, `remember_token`, `approved`, `role_id`, `social_id`, `social_type`, `show_phone_number`, `show_email`, `created_at`, `updated_at`) VALUES
-(1, 'user', 'karimi', 'user@gmail.com', NULL, '2021-09-06 07:57:59', '$2y$10$ECsMWoEHXbi8WrmZ2ZcbDuQzL14DuBt7zPgi7HNqe7dbzjKxm7lTy', NULL, NULL, NULL, 1, 1, NULL, NULL, 0, 0, '2021-09-06 07:57:59', '2021-09-06 07:57:59'),
-(2, 'امیرحسین', 'کریمی', 'admin@gmail.com', '09035720879', '2021-09-06 07:57:59', '$2y$10$L4Fd07hx.f6tF7rcMAzR6O3uUa8NPiB3fAmgq6UvWvOeDdumn9Sp2', NULL, NULL, NULL, 1, 2, NULL, NULL, 1, 0, '2021-09-06 07:57:59', '2021-09-09 07:38:14'),
-(3, 'author', 'karimi', 'author@gmail.com', NULL, '2021-09-06 07:57:59', '$2y$10$6JhkllgecBweZ2u.YEz1Ju3TTzJOVrAKWbVFvwuJWpP9c2cxp1jtO', NULL, NULL, NULL, 1, 3, NULL, NULL, 0, 0, '2021-09-06 07:57:59', '2021-09-06 07:57:59'),
-(4, 'sales', 'karimi', 'sales@gmail.com', NULL, '2021-09-06 07:57:59', '$2y$10$vL4H2GzXPcVFP0hbFlu7Z.LzyoaZJtchrEb3voC320UkCvnl5i06.', NULL, NULL, NULL, 1, 4, NULL, NULL, 0, 0, '2021-09-06 07:57:59', '2021-09-06 07:57:59'),
-(8, 'Amir hosein', 'khali', 'adada5116@gmail.com', NULL, '2021-09-08 13:14:10', NULL, NULL, NULL, NULL, 1, 1, '114471102313456450324', 'google', 0, 0, '2021-09-08 13:14:10', '2021-09-08 13:14:10');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `email_verified_at`, `password`, `two_factor_code`, `two_factor_code_expire`, `remember_token`, `approved`, `role_id`, `social_id`, `social_type`, `show_phone_number`, `show_email`, `created_at`, `updated_at`, `last_visited_at`, `delete_account_after`) VALUES
+(1, 'user', 'karimi', 'user@gmail.com', NULL, '2021-09-06 07:57:59', '$2y$10$ECsMWoEHXbi8WrmZ2ZcbDuQzL14DuBt7zPgi7HNqe7dbzjKxm7lTy', NULL, NULL, NULL, 1, 1, NULL, NULL, 0, 0, '2021-09-06 07:57:59', '2021-09-06 07:57:59', '2022-01-28 23:37:22', '6'),
+(2, 'امیرحسین', 'کریمی', 'admin@gmail.com', '09035720879', '2021-09-06 07:57:59', '$2y$10$L4Fd07hx.f6tF7rcMAzR6O3uUa8NPiB3fAmgq6UvWvOeDdumn9Sp2', NULL, NULL, NULL, 1, 2, NULL, NULL, 1, 0, '2021-09-06 07:57:59', '2022-01-28 20:07:36', '2022-01-28 23:37:36', '6'),
+(3, 'author', 'karimi', 'author@gmail.com', NULL, '2021-09-06 07:57:59', '$2y$10$6JhkllgecBweZ2u.YEz1Ju3TTzJOVrAKWbVFvwuJWpP9c2cxp1jtO', NULL, NULL, NULL, 1, 3, NULL, NULL, 0, 0, '2021-09-06 07:57:59', '2021-09-06 07:57:59', '2022-01-28 23:37:22', '6'),
+(4, 'sales', 'karimi', 'sales@gmail.com', NULL, '2021-09-06 07:57:59', '$2y$10$vL4H2GzXPcVFP0hbFlu7Z.LzyoaZJtchrEb3voC320UkCvnl5i06.', NULL, NULL, NULL, 1, 4, NULL, NULL, 0, 0, '2021-09-06 07:57:59', '2021-09-06 07:57:59', '2022-01-28 23:37:22', '6'),
+(8, 'Amir hosein', 'khali', 'adada5116@gmail.com', NULL, '2021-09-08 13:14:10', NULL, NULL, NULL, NULL, 1, 1, '114471102313456450324', 'google', 0, 0, '2021-09-08 13:14:10', '2021-09-08 13:14:10', '2022-01-28 23:37:22', '6');
 
 --
 -- Indexes for dumped tables
@@ -739,7 +745,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `permissions`
